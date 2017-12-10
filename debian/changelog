@@ -1,4 +1,10 @@
-svxlink (15.99-18) Testing; urgency=low
+svxlink (15.99-19) Testing; urgency=low
+
+  * Added Updated code for site status module
+
+ -- Richard Neese <kb3vgw@gmail.com>  Sun, 10 Dec 2017 12:31:40 -0500
+ 
+ svxlink (15.99-18) Testing; urgency=low
 
   * Added new timer code for site status module
 

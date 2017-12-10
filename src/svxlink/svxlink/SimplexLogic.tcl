@@ -167,6 +167,12 @@ proc every_minute {} {
   Logic::every_minute;
 }
 
+#
+# Executed once every whole second
+#
+proc every_second {} {
+  Logic::every_second;
+}
 
 #
 # Executed each time the transmitter is turned on or off
