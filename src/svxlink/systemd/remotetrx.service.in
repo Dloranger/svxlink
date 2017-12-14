@@ -1,18 +1,19 @@
 ;;;;; Author: Richard Neese<kb3vgw@gmail.com>
 
 [Unit]
-Description=svxlink repeater reflector software
-Documentation="man:svxlink"
-After=network.target remote-fs.target time.target sound.target
+Description=svxlink repeater remote RX/TX software
+Documentation="man:renotetrx(1)"
+Requires=svxlink_gpio_setup.service
+After=network.target remote-fs.target time.target sound.target svxlink_gpio_setup.service
 
 [Service]
 Type=simple
 User=svxlink
 Group=daemon
-EnvironmentFile=-/etc/default/svxreflector
-Environment=CFGFILE=/etc/svxlink/svxreflector.conf
+EnvironmentFile=-/etc/default/remotetrx
+Environment=CFGFILE=/etc/svxlink/remotetrx.conf
 RuntimeDirectory=svxlink
-ExecStart=/usr/bin/svxreflector --config $CFGFILE
+ExecStart=/usr/bin/remotetrx --config $CFGFILE --logfile /var/log/remotetrx --pidfile /run/svxlink/remotetrx.pid
 ExecReload=/bin/kill -s HUP $MAINPID
 Restart=on-failure
 TimeoutStartSec=60

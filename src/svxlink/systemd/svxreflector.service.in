@@ -12,7 +12,7 @@ Group=daemon
 EnvironmentFile=-/etc/default/svxreflector
 Environment=CFGFILE=/etc/svxlink/svxreflector.conf
 RuntimeDirectory=svxlink
-ExecStart=/usr/bin/svxreflector --config $CFGFILE
+ExecStart=/usr/bin/svxreflector --config $CFGFILE --logfile /var/log/svxreflector --pidfile /run/svxlink/svxreflector.pid
 ExecReload=/bin/kill -s HUP $MAINPID
 Restart=on-failure
 TimeoutStartSec=60
