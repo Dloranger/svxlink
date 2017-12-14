@@ -1,4 +1,10 @@
-svxlink (15.99-20) Testing; urgency=low
+svxlink (15.99-21) Testing; urgency=low
+
+  * added missing updated ti svxlink.service file
+
+ -- Richard Neese <kb3vgw@gmail.com>  Thu, 14 Dec 2017 13:15:40 -0500
+
+ svxlink (15.99-20) Testing; urgency=low
 
   * RePatched Systemd for pidfile and logfile
 
