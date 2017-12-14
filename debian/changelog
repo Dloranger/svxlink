@@ -1,3 +1,9 @@
+svxlink (15.99-20) Testing; urgency=low
+
+  * RePatched Systemd for pidfile and logfile
+
+ -- Richard Neese <kb3vgw@gmail.com>  Thur, 14 Dec 2017 10:11:40 -0500
+ 
 svxlink (15.99-19) Testing; urgency=low
 
   * Added Updated code for site status module
