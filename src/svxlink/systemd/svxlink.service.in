@@ -13,7 +13,7 @@ Group=daemon
 EnvironmentFile=-/etc/default/svxlink
 Environment=CFGFILE=/etc/svxlink/svxlink.conf
 RuntimeDirectory=svxlink
-ExecStart=/usr/bin/svxlink --config $CFGFILE
+ExecStart=/usr/bin/svxlink --config $CFGFILE --logfile /var/log/svxlink --pidfile /run/svxlink/svxlink.pid
 ExecReload=/bin/kill -s HUP $MAINPID
 Restart=on-failure
 TimeoutStartSec=60
