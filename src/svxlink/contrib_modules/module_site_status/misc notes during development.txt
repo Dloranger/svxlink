@@ -1,0 +1,41 @@
+Sounds needed for Site status module
+
+site_door_open
+site_door_closed
+fuel_low
+fuel_restored
+
+
+for {set i 0} {$i < $CFG_DIGITAL_SENSORS_COUNT} {incr i} {
+		set ENABLE $DIGITAL_ENABLE_$i
+		if {$ENABLE == "ENABLED"} {
+			set PATH=$CFG_DIGITAL_GPIO_PATH$CFG_DIGITAL_$i/value
+			# Read the state of the sensor and compare against the old state alerts should only 
+			# go out when the sensor changes state
+			set NEW_STATE_$i [exec cat PATH]
+			if {$CURRENT_STATE_$i != $NEW_STATE_$i} {
+				set CURRENT_STATE_$i $NEW_STATE_$i
+				printInfo "Digital Sensor $i has changed state"
+				switch $CFG_DIGITAL_TYPE_$i {
+					DOORSENSOR {
+						DOORSENSOR_STATUS $i $NEW_STATE_$i
+					}
+					DOOR_ACTIVE_HIGH {
+						DOORSENSOR_ANNOUNCE $i $NEW_STATE_$i
+					}
+					DOOR_ACTIVE_LOW {
+						DOORSENSOR_ANNOUNCE $i !$NEW_STATE_$i
+					}
+					FUEL_ACTIVE_HIGH {
+						FUELSENSOR_ANNOUNCE $i $NEW_STATE_$i
+					}
+					FUEL_ACTIVE_LOW {
+						FUELSENSOR_ANNOUNCE $i !$NEW_STATE_$i
+					}
+					default {
+						printInfo "SENSOR $i is of unknown type"
+					}
+				}
+			}
+		}
+	}
