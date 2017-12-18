@@ -32,75 +32,103 @@ namespace eval SiteStatus {
 		variable module_name
 		puts "$module_name: $msg"
 	}
-	# Define variables for the sensors here
-	variable CFG_DIGITAL_0
-	variable CFG_DIGITAL_0_TYPE
-	variable CURRENT_STATE_0
-	variable NEW_STATE_0
-	variable DIGITAL_ENABLE_0
-	
-	set gpioPath "/sys/class/gpio/gpio"
 	 
 	proc activateInit {} {
 		
 	}
 	
-	# Define variables for the sensors here
+	# Define variables for the DITIAL sensors here
 	variable CFG_DIGITAL_GPIO_PATH
 	for {set i 0} {$i < $CFG_DIGITAL_SENSORS_COUNT} {incr i} {
 		set CFG_DIGITAL_$i
 		variable CFG_DIGITAL_TYPE_$i
-		variable CURRENT_STATE_$i
-		variable NEW_STATE_$i
+		variable DIGITAL_CURRENT_STATE_$i
+		variable DIGITAL_NEW_STATE_$i
 		variable DIGITAL_ENABLE_$i
 	}
 		
-	# capture the initial values on the sensors and enable them if the settings are all defined 
+	# capture the initial values on the digital sensors and enable them if they are all defined 
 	# capture the initial values on the sensor and enable if the settings are all defined 
 	# (validity of the sensor is not enforced)
+	set DIGITAL_PATH $CFG_DIGITAL_GPIO_PATH
 	for {set i 0} {$i < $CFG_DIGITAL_SENSORS_COUNT} {incr i} {
 		variable CFG_DIGITAL_$i
 		if {[info exists CFG_DIGITAL_$i]} {
-			set PATH $CFG_DIGITAL_GPIO_PATH
-			set GPIO "CFG_DIGITAL_$i"
-			set GPIO [subst $$GPIO]
-			set value [exec cat $PATH$GPIO/value]
-			set CURRENT_STATE_$i $value
-			set current "CURRENT_STATE_$i"
+			set DIGITAL_GPIO "CFG_DIGITAL_$i"
+			set DIGITAL_GPIO [subst $$DIGITAL_GPIO]
+			set value [exec cat $DIGITAL_PATH$DIGITAL_GPIO/value]
+			set DIGITAL_CURRENT_STATE_$i $value
+			set current "DIGITAL_CURRENT_STATE_$i"
 			#printInfo "Initial Logic State-[subst $$current]"
 			printInfo "Digital Sensor $i is enabled"
 			set DIGITAL_ENABLE_$i "ENABLED"
 		} else {
 			set DIGITAL_ENABLE_$i "DISABLED"
-			#printInfo "Digital Sensor $i is not configured"
+		}
+	}
+	
+	# Define variables for the ANALOG sensors here
+	variable CFG_ANALOG_GPIO_PATH
+	for {set i 0} {$i < $CFG_ANALOG_SENSORS_COUNT} {incr i} {
+		set CFG_ANALOG_$i
+		variable CFG_ANALOG_TYPE_$i
+		variable ANALOG_CURRENT_STATE_$i
+		variable ANALOG_NEW_STATE_$i
+		variable ANALOG_ENABLE_$i
+	}
+	
+	# capture the initial values on the analog sensors and enable them if they are all defined 
+	# capture the initial values on the sensor and enable if the settings are all defined 
+	# (validity of the sensor is not enforced)
+	for {set i 0} {$i < $CFG_ANALOG_SENSORS_COUNT} {incr i} {
+		variable CFG_ANALOG_$i
+		if {[info exists CFG_ANALOG_$i]} {
+			set ANALOG_GPIO "CFG_ANALOG_$i"
+			set ANALOG_GPIO [subst $$ANALOG_GPIO]			
+			set ANALOG_PATH $CFG_ANALOG_GPIO_PATH
+			set ANALOG_RAW "_raw" 
+			set value [exec cat $ANALOG_PATH$ANALOG_GPIO$ANALOG_RAW]
+			set ANALOG_CURRENT_STATE_$i $value
+			set current "ANALOG_CURRENT_STATE_$i"
+			#printInfo "Initial Logic State-[subst $$current]"
+			printInfo "Analog Sensor $i is enabled"
+			set ANALOG_ENABLE_$i "ENABLED"
+		} else {
+			set ANALOG_ENABLE_$i "DISABLED"
 		}
 	}
 
 	proc main_every_second {} {
+		# USE THIS SECTION FOR DIGITAL SENSORS, ANALOG SENSORS ARE HANDLED BELOW
 		variable CFG_DIGITAL_GPIO_PATH
 		variable CFG_DIGITAL_SENSORS_COUNT
 		for {set i 0} {$i < $CFG_DIGITAL_SENSORS_COUNT} {incr i} {
 			variable DIGITAL_ENABLE_$i
 			set ENABLE "DIGITAL_ENABLE_$i"
 			set ENABLE [subst $$ENABLE]
+			# Only handle the enabled sensors
 			if {$ENABLE == "ENABLED"} {
-				variable CURRENT_STATE_$i
+				# work to create the indexed variables and get the values read in
+				variable DIGITAL_CURRENT_STATE_$i
 				variable CFG_DIGITAL_$i
 				set CFG_DIGITAL "CFG_DIGITAL_$i"
 				set CFG_DIGITAL [subst $$CFG_DIGITAL]
-				set PATH $CFG_DIGITAL_GPIO_PATH$CFG_DIGITAL/value
+				set DIGITAL_PATH $CFG_DIGITAL_GPIO_PATH$CFG_DIGITAL/value
 				# Read the state of the sensor and compare against the old state alerts should only 
 				# go out when the sensor changes state
-				set NEW_STATE [exec cat $PATH]
-				set CURRENT_STATE_PTR "CURRENT_STATE_$i"
-				set CURRENT_STATE [subst $$CURRENT_STATE_PTR]
-				if {$CURRENT_STATE != $NEW_STATE} {
+				set DIGITAL_NEW_STATE [exec cat $DIGITAL_PATH]
+				set DIGITAL_CURRENT_STATE_PTR "DIGITAL_CURRENT_STATE_$i"
+				set DIGITAL_CURRENT_STATE [subst $$DIGITAL_CURRENT_STATE_PTR]
+				# only process events where the sensor has a different state (vs previous) this second
+				if {$DIGITAL_CURRENT_STATE != $DIGITAL_NEW_STATE} {
 					#update the current state for next time the value is tested
-					set CURRENT_STATE_$i $NEW_STATE
+					set DIGITAL_CURRENT_STATE_$i $DIGITAL_NEW_STATE
 					printInfo "Digital Sensor $i has changed state"
+					# determine the type of sensor to figure out what to announce
 					variable CFG_DIGITAL_TYPE_$i
 					set TYPE "CFG_DIGITAL_TYPE_$i"
 					set TYPE [subst $$TYPE]
+					# Handle the event based on user configurations
 					switch $TYPE {
 						DOOR_ACTIVE_HIGH {
 							DOORSENSOR_ANNOUNCE $i $NEW_STATE
@@ -120,8 +148,56 @@ namespace eval SiteStatus {
 					}
 				}
 			}
-		}		
+		}
+		
+		# USE THIS SECTION FOR ANALOG SENSORS, DIGITAL SENSORS ARE HANDLED ABOVE
+		variable CFG_ANALOG_GPIO_PATH
+		variable CFG_ANALOG_SENSORS_COUNT
+		for {set i 0} {$i < $CFG_ANALOG_SENSORS_COUNT} {incr i} {
+			variable ANALOG_ENABLE_$i
+			set ENABLE "ANALOG_ENABLE_$i"
+			set ENABLE [subst $$ENABLE]
+			# Only handle the enabled sensors
+			if {$ENABLE == "ENABLED"} {
+				# work to create the indexed variables and get the values read in
+				variable ANALOG_CURRENT_STATE_$i
+				variable CFG_ANALOG_$i
+				set ANALOG_GPIO "CFG_ANALOG_$i"
+				set ANALOG_GPIO [subst $$ANALOG_GPIO]			
+				set ANALOG_PATH $CFG_ANALOG_GPIO_PATH
+				set ANALOG_RAW "_raw" 
+				set value [exec cat $ANALOG_PATH$ANALOG_GPIO$ANALOG_RAW]
+				# Read the state of the sensor and compare against the old state alerts should only 
+				# go out when the sensor changes state
+				set ANALOG_NEW_STATE $value
+				set ANALOG_CURRENT_STATE_PTR "ANALOG_CURRENT_STATE_$i"
+				set ANALOG_CURRENT_STATE [subst $$ANALOG_CURRENT_STATE_PTR]
+				# only process events where the sensor has a different state (vs previous) this second
+				
+				# TODO - Add Hysterisis to prevent excessive messages
+				if {$ANALOG_CURRENT_STATE != $ANALOG_NEW_STATE} {
+					#update the current state for next time the value is tested
+					set ANALOG_CURRENT_STATE_$i $ANALOG_NEW_STATE
+					printInfo "ANALOG Sensor $i has changed state"
+					# determine the type of sensor to figure out what to announce
+					variable CFG_ANALOG_TYPE_$i
+					set TYPE "CFG_ANALOG_TYPE_$i"
+					set TYPE [subst $$TYPE]
+					# Handle the event based on user configurations
+					switch $TYPE {
+						TEMPERATURE {
+							TEMPERATURE $i $ANALOG_NEW_STATE
+						}
+						default {
+							printInfo "SENSOR $i is of unknown type -$TYPE"
+						}
+					}
+				}
+			}
+		}
 	}
+	
+	
 	#basic function to announce the door sensor changing status
 	proc DOORSENSOR_ANNOUNCE {sensor value} {
 		if {$value == 1} {
@@ -144,7 +220,8 @@ namespace eval SiteStatus {
 	}
 	
 	#basic function to announce the temp sensor changing status
-	proc TEMPSENSOR_ANNOUNCE {sensor value} {
+	proc TEMPERATURE {sensor value} {
+		printInfo "Analog sensor $sensor reading is $value"
 	}
 
 	# Executed when this module is being deactivated.
