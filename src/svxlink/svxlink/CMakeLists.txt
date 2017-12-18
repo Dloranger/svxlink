@@ -80,9 +80,10 @@ install_if_not_exists(${CMAKE_CURRENT_BINARY_DIR}/svxlink.conf
 install_if_not_exists(${CMAKE_CURRENT_BINARY_DIR}/svxlink_gpio.conf
   ${SVX_SYSCONF_INSTALL_DIR}
   )
+
 install(FILES events.tcl DESTINATION ${SVX_SHARE_INSTALL_DIR})
-install(FILES DuplexLogic.tcl SimplexLogic.tcl Module.tcl Logic.tcl CW.tcl
-  SelCall.tcl locale.tcl 
+install(FILES DuplexLogic.tcl SimplexLogic.tcl Module.tcl Logic.tcl CW.tcl 
+  SelCall.tcl locale.tcl DuplexLogic1.tcl
   DESTINATION ${SVX_SHARE_INSTALL_DIR}/events.d
   )
 install(PROGRAMS ${CMAKE_CURRENT_BINARY_DIR}/svxlink_gpio_up
