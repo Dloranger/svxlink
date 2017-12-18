@@ -1,17 +1,20 @@
 ###############################################################################
-#	SVXlink Site Status Module Coded by Dan Loranger (KG7PAR)
+#  SVXlink Site Status Module Coded by Dan Loranger (KG7PAR)
 #  
-#	This module enables the user to configure sensors to monitor the health and
-#   wellbeing of a remote site.  The module runs in the background and on a regular interval (typically a 
-#   few times a second) checks the inputs and will announce over the air, any configured messages as 
-#   appropriate to alert the site manager/monitors that an event has occurred.
+#  This module enables the user to configure sensors to monitor the health and
+#  wellbeing of a remote site.  The module runs in the background and on a 
+#  regular interval (once per second) checks the inputs and will announce over 
+#  the air, any configured messages as to alert the site manager/monitors 
+#  that an event of interest has occurred.
 #
 ###############################################################################
 #
-# This is the namespace in which all functions and variables below will exist. The name must match the 
-# configuration variable "NAME" in the [ModuleTcl] section in the configuration file. The name may be 
-# changed but it must be changed in both places.
+# This is the namespace in which all functions and variables below will exist. 
+# The name must match the configuration variable "NAME" in the [ModuleTcl] 
+# section in the configuration file. The name may be changed but it must be 
+# changed in both places.
 #
+###############################################################################
 namespace eval SiteStatus {
 	# Check if this module is loaded in the current logic core
 	#
@@ -24,7 +27,7 @@ namespace eval SiteStatus {
 	set module_name [namespace tail [namespace current]]
 	
 	
-	# A convenience function for printing out information prefixed by the module name
+	# A convenience function for printing out info prefixed by the module name
 	#
 	#   msg - The message to print
 	#
@@ -47,8 +50,11 @@ namespace eval SiteStatus {
 		variable DIGITAL_ENABLE_$i
 	}
 		
-	# capture the initial values on the digital sensors and enable them if they are all defined 
-	# capture the initial values on the sensor and enable if the settings are all defined 
+	# capture the initial values on the digital sensors and enable them if 
+	# they are all defined 
+	# 
+	# capture the initial values on the sensor and enable if the settings 
+	# are all defined 
 	# (validity of the sensor is not enforced)
 	set DIGITAL_PATH $CFG_DIGITAL_GPIO_PATH
 	for {set i 0} {$i < $CFG_DIGITAL_SENSORS_COUNT} {incr i} {
@@ -173,23 +179,31 @@ namespace eval SiteStatus {
 				set ANALOG_CURRENT_STATE_PTR "ANALOG_CURRENT_STATE_$i"
 				set ANALOG_CURRENT_STATE [subst $$ANALOG_CURRENT_STATE_PTR]
 				# only process events where the sensor has a different state (vs previous) this second
-				
-				# TODO - Add Hysterisis to prevent excessive messages
 				if {$ANALOG_CURRENT_STATE != $ANALOG_NEW_STATE} {
-					#update the current state for next time the value is tested
-					set ANALOG_CURRENT_STATE_$i $ANALOG_NEW_STATE
-					printInfo "ANALOG Sensor $i has changed state"
-					# determine the type of sensor to figure out what to announce
-					variable CFG_ANALOG_TYPE_$i
-					set TYPE "CFG_ANALOG_TYPE_$i"
-					set TYPE [subst $$TYPE]
-					# Handle the event based on user configurations
-					switch $TYPE {
-						TEMPERATURE {
-							TEMPERATURE $i $ANALOG_NEW_STATE
-						}
-						default {
-							printInfo "SENSOR $i is of unknown type -$TYPE"
+					#Read in the hysterisis
+					variable CFG_ANALOG_HYSTERISIS_$i
+					set ANALOG_HYSTERISIS CFG_ANALOG_HYSTERISIS_$i
+					set ANALOG_HYSTERISIS [subst $$ANALOG_HYSTERISIS]
+					#puts "CURRENT_STATE:$ANALOG_CURRENT_STATE"
+					#puts "NEW_STATE:$ANALOG_NEW_STATE"
+					#puts "HYSTERISIS:$ANALOG_HYSTERISIS"
+					if {(($ANALOG_CURRENT_STATE-$ANALOG_NEW_STATE)>$ANALOG_HYSTERISIS)
+					| (($ANALOG_NEW_STATE-$ANALOG_CURRENT_STATE)>$ANALOG_HYSTERISIS)} {
+						#update the current state for next time the value is tested
+						set ANALOG_CURRENT_STATE_$i $ANALOG_NEW_STATE
+						printInfo "ANALOG Sensor $i has changed state"
+						# determine the type of sensor to figure out what to announce
+						variable CFG_ANALOG_TYPE_$i
+						set TYPE "CFG_ANALOG_TYPE_$i"
+						set TYPE [subst $$TYPE]
+						# Handle the event based on user configurations
+						switch $TYPE {
+							TEMPERATURE {
+								TEMPERATURE $i $ANALOG_NEW_STATE
+							}
+							default {
+								printInfo "SENSOR $i is of unknown type -$TYPE"
+							}
 						}
 					}
 				}
