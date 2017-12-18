@@ -80,9 +80,16 @@ install_if_not_exists(${CMAKE_CURRENT_BINARY_DIR}/svxlink.conf
 install_if_not_exists(${CMAKE_CURRENT_BINARY_DIR}/svxlink_gpio.conf
   ${SVX_SYSCONF_INSTALL_DIR}
   )
+
+# bring along the default config for the pi-repeater-2x to make setup easier
+install(FILES svxlink_conf.pi_repeater_2x DESTINATION ${SVX_SYSCONF_INSTALL_DIR})
+
+# bring along the default gpio config for the pi-repeater-2x to make setup easier
+install(FILES svxlink_gpio_conf.pi_repeater_2x DESTINATION ${SVX_SYSCONF_INSTALL_DIR})
+
 install(FILES events.tcl DESTINATION ${SVX_SHARE_INSTALL_DIR})
-install(FILES DuplexLogic.tcl SimplexLogic.tcl Module.tcl Logic.tcl CW.tcl
-  SelCall.tcl locale.tcl 
+install(FILES DuplexLogic.tcl SimplexLogic.tcl Module.tcl Logic.tcl CW.tcl 
+  SelCall.tcl locale.tcl DuplexLogic1.tcl
   DESTINATION ${SVX_SHARE_INSTALL_DIR}/events.d
   )
 install(PROGRAMS ${CMAKE_CURRENT_BINARY_DIR}/svxlink_gpio_up
@@ -91,3 +98,9 @@ install(PROGRAMS ${CMAKE_CURRENT_BINARY_DIR}/svxlink_gpio_up
 install(PROGRAMS ${CMAKE_CURRENT_BINARY_DIR}/svxlink_gpio_down
   DESTINATION ${SBIN_INSTALL_DIR}
   )
+
+install(PROGRAMS ${CMAKE_CURRENT_BINARY_DIR}/svxlink_conf.pi_repeater_2x
+  DESTINATION ${SBIN_INSTALL_DIR}
+  )
+
+
