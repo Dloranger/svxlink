@@ -92,9 +92,3 @@ install(PROGRAMS ${CMAKE_CURRENT_BINARY_DIR}/svxlink_gpio_up
 install(PROGRAMS ${CMAKE_CURRENT_BINARY_DIR}/svxlink_gpio_down
   DESTINATION ${SBIN_INSTALL_DIR}
   )
-
-install(PROGRAMS ${CMAKE_CURRENT_BINARY_DIR}/svxlink_conf.pi_repeater_2x
-  DESTINATION ${SBIN_INSTALL_DIR}
-  )
-
-
