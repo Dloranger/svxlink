@@ -148,6 +148,12 @@ namespace eval SiteStatus {
 						FUEL_ACTIVE_LOW {
 							FUELSENSOR_ANNOUNCE $i !$NEW_STATE
 						}
+						SOLAR_ACTIVE_HIGH {
+							SOLARSENSOR_ANNOUNCE $i $NEW_STATE
+						}
+						SOLAR_ACTIVE_LOW {
+							SOLARSENSOR_ANNOUNCE $i !$NEW_STATE
+						}
 						default {
 							printInfo "SENSOR $i is of unknown type -$TYPE"
 						}
@@ -233,9 +239,25 @@ namespace eval SiteStatus {
 		}
 	}
 	
+	#basic function to announce the door sensor changing status
+	proc SOLARSENSOR_ANNOUNCE {sensor value} {
+		if {$value == 1} {
+			playMsg "solar_charging"
+			printInfo "Solar charger Number $sensor indicates the system is charging"
+		} else {
+			playMsg "solar_discharging"
+			printInfo "Solar charger Number $sensor indicates the system is discharging"
+		}
+	}
+	
 	#basic function to announce the temp sensor changing status
 	proc TEMPERATURE {sensor value} {
-		printInfo "Analog sensor $sensor reading is $value"
+		printInfo "TEMPERATURE sensor $sensor reading is $value"
+	}
+	
+	#basic function to announce the temp sensor changing status
+	proc BATTERY_VOLTAGE {sensor value} {
+		printInfo "BATTERY VOLTAGE $sensor reading is $value"
 	}
 
 	# Executed when this module is being deactivated.
