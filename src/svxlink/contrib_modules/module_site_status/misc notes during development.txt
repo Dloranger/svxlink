@@ -1,9 +1,0 @@
-Sounds needed for Site status module
-
-site_door_open
-site_door_closed
-fuel_low
-fuel_restored
-solar_charging
-solar_discharging
-

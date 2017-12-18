@@ -155,7 +155,7 @@ namespace eval SiteStatus {
 							SOLARSENSOR_ANNOUNCE $i !$NEW_STATE
 						}
 						default {
-							printInfo "SENSOR $i is of unknown type -$TYPE"
+							printInfo "DIGITAL SENSOR $i is of unknown type -$TYPE"
 						}
 					}
 				}
@@ -208,7 +208,7 @@ namespace eval SiteStatus {
 								TEMPERATURE $i $ANALOG_NEW_STATE
 							}
 							default {
-								printInfo "SENSOR $i is of unknown type -$TYPE"
+								printInfo "ANALOG SENSOR $i is of unknown type -$TYPE"
 							}
 						}
 					}
@@ -234,7 +234,7 @@ namespace eval SiteStatus {
 			playMsg "fuel_low"
 			printInfo "Fuel Sensor Number $sensor indicates the fuel is now low"
 		} else {
-			playMsg "fuel_restored"
+			playMsg "fuel_filled"
 			printInfo "fuel Sensor Number $sensor indicates the fuel is now filled"
 		}
 	}
@@ -252,11 +252,21 @@ namespace eval SiteStatus {
 	
 	#basic function to announce the temp sensor changing status
 	proc TEMPERATURE {sensor value} {
-		printInfo "TEMPERATURE sensor $sensor reading is $value"
+		# do calculations here to convert the voltage to normal units
+		# as they are read in as raw 5V/1024 values
+		# from https://learn.adafruit.com/tmp36-temperature-sensor/using-a-temp-sensor
+		# Voltage at pin in milliVolts = (reading from ADC) * (5000/1024) 
+		# Centigrade temperature = [(analog voltage in mV) - 500] / 10
+		set temperature [eval $value *5000/1024]
+		set tempertaure [eval ($temperature -500)/10]
+		printInfo "TEMPERATURE sensor $sensor reading is $temperature degrees Celcius"
 	}
 	
 	#basic function to announce the temp sensor changing status
 	proc BATTERY_VOLTAGE {sensor value} {
+		# do calculations here to convert the voltage to normal units
+		# as they are read in as raw 5V/1024 values
+		set value [eval (5/1024)*$value]
 		printInfo "BATTERY VOLTAGE $sensor reading is $value"
 	}
 
