@@ -5,13 +5,14 @@
 #####################################################
 [GLOBAL]
 #MODULE_PATH=/usr/lib/arm-linux-gnueabihf/svxlink
-LOGICS=SimplexLogic #DuplexLogic ReflectorLogic
+LOGICS=SimplexLogic 
+#SimplexLogic DuplexLogic ReflectorLogic
 #LINKS=ReflectorLink
 CFG_DIR=svxlink.d
 TRX = NetUplinkTrx
 TIMESTAMP_FORMAT="%c"
 CARD_SAMPLE_RATE=48000
-LOCATION_INFO=LocationInfo
+#LOCATION_INFO=LocationInfo
 #LINKS=NetLink,ReflectorLink
 HEARTBEAT_TIMEOUT = 10
 
@@ -20,18 +21,29 @@ TYPE=Simplex
 RX=Rx1
 TX=Tx1
 CALLSIGN=MYCALL
-PHONETIC_CALLSIGN=1
-SHORT_ID_VOICE_ENABLE=1
-SHORT_ID_CW_ENABLE=1
+PHONETIC_SPELLING=0
+SHORT_ID_VOICE_ENABLE=0
+SHORT_ID_CW_ENABLE=0
+SHORT_ANNOUNCE_ENABLE=0
+SHORT_ANNOUNCEMENTE="short_announce.wav"
 SHORT_IDENT_INTERVAL=10
-LONG_ID_VOICE_ENABLE=1
-LONG_ID_CW_ENABLE=1
+LONG_ID_VOICE_ENABLE=0
+LONG_ID_CW_ENABLE=0
+LONG_ANNOUNCE_ENABLE=0 
+LONG_ANNOUNCEMENTE="long_announce.wav"
 LONG_IDENT_INTERVAL=60
 CW_AMP=200
 CW_WPM=25
 CW_PITCH=600
 IDENT_ONLY_AFTER_TX=4
-MODULES=ModuleHelp,ModuleParrot,ModuleEchoLink,ModuleTclVoiceMail
+MODULES=""
+	"ModuleHelp,"
+	"ModuleParrot,"
+#	"ModuleEchoLink,"
+#	"ModuleTclVoiceMail,"
+#	"ModuleA2D_MCP320X,"
+	"ModuleRemoteRelay,"
+	"ModuleSiteStatus"
 TIME_FORMAT=24
 IDENT=Ident
 #EXEC_CMD_ON_SQL_CLOSE=500
@@ -56,18 +68,29 @@ TYPE=Repeater
 RX=Rx1
 TX=Tx1
 CALLSIGN=MYCALL
-PHONETIC_CALLSIGN=0
+PHONETIC_SPELLING=0
 SHORT_ID_VOICE_ENABLE=0
 SHORT_ID_CW_ENABLE=0
+SHORT_ANNOUNCE_ENABLE=0
+SHORT_ANNOUNCEMENTE="short_announcement.wav"
 SHORT_IDENT_INTERVAL=10
 LONG_ID_VOICE_ENABLE=0
-LONG_ID_CW_ENABLE=0 
+LONG_ID_CW_ENABLE=0
+LONG_ANNOUNCE_ENABLE=0 
+LONG_ANNOUNCEMENTE="long_announcement.wav"
 LONG_IDENT_INTERVAL=60
 CW_AMP=200
 CW_WPM=25
 CW_PITCH=600
 IDENT_ONLY_AFTER_TX=4
-MODULES=ModuleHelp,ModuleParrot,ModuleEchoLink,ModuleTclVoiceMail
+MODULES=""
+	"ModuleHelp,"
+	"ModuleParrot,"
+#	"ModuleEchoLink,"
+#	"ModuleTclVoiceMail,"
+#	"ModuleA2D_MCP320X,"
+	"ModuleRemoteRelay,"
+	"ModuleSiteStatus"
 TIME_FORMAT=24
 IDENT=Ident
 EXEC_CMD_ON_SQL_CLOSE=500
