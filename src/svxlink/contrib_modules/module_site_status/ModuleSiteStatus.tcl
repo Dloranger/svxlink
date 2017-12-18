@@ -257,8 +257,8 @@ namespace eval SiteStatus {
 		# from https://learn.adafruit.com/tmp36-temperature-sensor/using-a-temp-sensor
 		# Voltage at pin in milliVolts = (reading from ADC) * (5000/1024) 
 		# Centigrade temperature = [(analog voltage in mV) - 500] / 10
-		set temperature [eval $value *5000/1024]
-		set tempertaure [eval ($temperature -500)/10]
+		set voltage [expr $value * 0.004882814]
+		set temperature [expr ($voltage-0.5)*100]
 		printInfo "TEMPERATURE sensor $sensor reading is $temperature degrees Celcius"
 	}
 	
