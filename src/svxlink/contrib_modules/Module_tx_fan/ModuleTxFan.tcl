@@ -40,20 +40,52 @@ namespace eval TxFan {
 		
 	}
 	
+	variable CFG_MODE
+	variable timer
 	proc main {} {
+	variable CFG_MODE
 		variable CFG_PTT_PATH_1
 		variable CFG_PTT_PATH_2
 		variable CFG_FAN_GPIO
-		if {[exec cat $CFG_PTT_PATH_1] | [exec cat $CFG_PTT_PATH_2]}  { 
-			#printInfo "Fan Enabled"
-			set fp [open $CFG_FAN_GPIO w]
-			puts $fp "1"
-			close $fp
-		} else {
-			#printInfo "Fan disabled"
-			set fp [open $CFG_FAN_GPIO w]
-			puts $fp "0"
-			close $fp
+		variable CFG_DELAY
+		variable timer
+		switch $CFG_MODE {
+			FOLLOW_PTT {
+				if {[exec cat $CFG_PTT_PATH_1] | [exec cat $CFG_PTT_PATH_2]}  { 
+					#printInfo "Fan Enabled"
+					set fp [open $CFG_FAN_GPIO w]
+					puts $fp "1"
+					close $fp
+				} else {
+					#printInfo "Fan disabled"
+					set fp [open $CFG_FAN_GPIO w]
+					puts $fp "0"
+					close $fp
+				}
+			}
+			COUNT_DOWN {
+				if {[exec cat $CFG_PTT_PATH_1] | [exec cat $CFG_PTT_PATH_2]}  { 
+					# turn on the timer and reset the count down register
+					#printInfo "Fan enabled & Timer Reset"
+					set fp [open $CFG_FAN_GPIO w]
+					puts $fp "1"
+					close $fp
+					set timer $CFG_DELAY
+				} else {
+					if {$timer == 0} {
+						#printInfo "Fan disabled"
+						set fp [open $CFG_FAN_GPIO w]
+						puts $fp "0"
+						close $fp
+					} else {
+						#printInfo $timer
+						set timer [expr $timer-1]
+					}
+				}
+			}
+			default {
+				printInfo "Unknown mode, supported options are COUNT_DOWN or FOLLOW_PTT"
+			}
 		}
 	}
 	
