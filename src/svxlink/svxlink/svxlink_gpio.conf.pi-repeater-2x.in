@@ -10,7 +10,9 @@ GPIO_PATH=/sys/class/gpio
 
 # Space separated list of GPIO pins that point IN and have an
 # Active HIGH state (3.3v = ON, 0v = OFF)
-GPIO_IN_HIGH="496"
+
+# On Pi-Repeater-2X the GPIO on the DB15 range from 496-503
+GPIO_IN_HIGH="496 497 498 499 500 501 502 503"
 
 # Space separated list of GPIO pins that point IN and have an
 # Active LOW state (0v = ON, 3.3v = OFF)
