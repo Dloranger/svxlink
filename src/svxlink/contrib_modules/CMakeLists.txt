@@ -19,6 +19,13 @@ if(WITH_CONTRIB_MODULE_SITE_STATUS)
   add_subdirectory(module_site_status)
 endif(WITH_CONTRIB_MODULE_SITE_STATUS)
 
+option(WITH_CONTRIB_MODULE_TXFAN
+  "Set to ON to build and install contributed module TXFAN")
+if(WITH_CONTRIB_MODULE_TXFAN)
+  message(STATUS "Building experimental module TXFAN")
+  add_subdirectory(module_txfan)
+endif(WITH_CONTRIB_MODULE_TXFAN)
+
 option(WITH_CONTRIB_MODULE_SVXLINKCFG
   "Set to ON to build and install contributed module SVXLINKCFG")
 if(WITH_CONTRIB_MODULE_SVXLINKCFG)
