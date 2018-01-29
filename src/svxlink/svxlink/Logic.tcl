@@ -171,13 +171,15 @@ namespace eval Logic {
 		}
 		# only play CW id if not disabled (default to enabled)
 		if {$short_cw_id_enable !=0} {
-			puts "Playing short CW ID"
-			CW::play $mycall
-			if {$CFG_TYPE == "Repeater"} {
-				CW::play "/R"
-			}	
-			playSilence 250;
-		}
+            puts "Playing long CW ID"
+            if {$CFG_TYPE == "Repeater"} {
+                set call "$mycall/R"
+                CW::play $call
+            } else {
+                CW::play $mycall
+            }
+            playSilence 250;
+        }
 	}
 
 
@@ -239,13 +241,15 @@ namespace eval Logic {
 		}
 		# only play CW id if not disabled (default to enabled)
 		if {$long_cw_id_enable !=0} {
-			puts "Playing long CW ID"
-			CW::play $mycall
-			if {$CFG_TYPE == "Repeater"} {
-				CW::play "/R"
-			}	
-			playSilence 250;
-		}	
+            puts "Playing long CW ID"
+            if {$CFG_TYPE == "Repeater"} {
+                set call "$mycall/R"
+                CW::play $call
+            } else {
+                CW::play $mycall
+            }
+            playSilence 250;
+        }	
 	}
 
 
@@ -265,8 +269,6 @@ namespace eval Logic {
 		}
 		playSilence 100;
 	}
-
-
 	#
 	# Executed when an empty macro command (i.e. D#) has been entered.
 	#
