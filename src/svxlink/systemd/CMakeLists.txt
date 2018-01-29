@@ -38,6 +38,9 @@ configure_file(${SYSTEMD_SOURCE_DIR}/remotetrx.conf.in
                ${PROJECT_BINARY_DIR}/systemd/remotetrx.conf)
 message(STATUS "Configured systemd unit file:remotetrx.conf")
 
+configure_file(${SYSTEMD_SOURCE_DIR}/svxreflector.service.in
+               ${PROJECT_BINARY_DIR}/systemd/svxreflector.service)
+
 configure_file(${SYSTEMD_SOURCE_DIR}/svxlink.default.in
                ${PROJECT_BINARY_DIR}/systemd/svxlink)
 message(STATUS "Configured systemd unit file:svxlink")
@@ -50,6 +53,9 @@ configure_file(${SYSTEMD_SOURCE_DIR}/remotetrx.default.in
                ${PROJECT_BINARY_DIR}/systemd/remotetrx)
 message(STATUS "Configured systemd unit file:remotetrx")
 
+configure_file(${SYSTEMD_SOURCE_DIR}/svxreflector.default.in
+               ${PROJECT_BINARY_DIR}/systemd/svxreflector)
+
 install(FILES ${PROJECT_BINARY_DIR}/systemd/svxlink_gpio_setup.service
         DESTINATION ${SYSTEMD_CONFIGURATIONS_FILES_DIR})
 install(FILES ${PROJECT_BINARY_DIR}/systemd/svxlink.service
@@ -57,6 +63,8 @@ install(FILES ${PROJECT_BINARY_DIR}/systemd/svxlink.service
 install(FILES ${PROJECT_BINARY_DIR}/systemd/svxreflector.service
         DESTINATION ${SYSTEMD_CONFIGURATIONS_FILES_DIR})
 install(FILES ${PROJECT_BINARY_DIR}/systemd/remotetrx.service
+        DESTINATION ${SYSTEMD_CONFIGURATIONS_FILES_DIR})
+install(FILES ${PROJECT_BINARY_DIR}/systemd/svxreflector.service
         DESTINATION ${SYSTEMD_CONFIGURATIONS_FILES_DIR})
 message(STATUS "Systemd unit files will be installed to "
         "${SYSTEMD_CONFIGURATIONS_FILES_DIR} after make install")
@@ -73,6 +81,8 @@ install(FILES ${PROJECT_BINARY_DIR}/systemd/svxlink
 install(FILES ${PROJECT_BINARY_DIR}/systemd/svxreflector
         DESTINATION ${SYSTEMD_DEFAULTS_FILES_DIR} )
 install(FILES ${PROJECT_BINARY_DIR}/systemd/remotetrx
+        DESTINATION ${SYSTEMD_DEFAULTS_FILES_DIR} )
+install(FILES ${PROJECT_BINARY_DIR}/systemd/svxreflector
         DESTINATION ${SYSTEMD_DEFAULTS_FILES_DIR} )
 message(STATUS "Systemd unit configuration files will be "
                "installed to ${SYSTEMD_DEFAULTS_FILES_DIR} "
