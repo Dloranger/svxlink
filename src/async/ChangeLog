@@ -1,14 +1,4 @@
- 1.6.0 -- ?? ??? 2018
-----------------------
-
-* New class Async::AudioFsf, an implementation of a frequency sampling filter.
-
-* Add method Async::Config::listSections() making it possible to list all
-  configuration sections.
-
-
-
- 1.5.0 -- 30 Dec 2017
+1.5.0 -- ?? ??? 2017
 ----------------------
 
 * Support for Qt5 added. Patch contributed by Richard Neese.
@@ -40,13 +30,13 @@
 * AudioProcessor bugfix: State could get corrupted due to double call of
   sample output function.
 
-* TcpClient: DNS lookup is now done on every reconnect.
-
-* AudioDeviceAlsa: Relaxed assertion for snd_pcm_readi so that fewer frames
-  than requested may be returned.
-
-
-
+ * TcpClient: DNS lookup is now done on every reconnect.
+ 
+ * AudioDeviceAlsa: Relaxed assertion for snd_pcm_readi so that fewer frames
+   than requested may be returned.
+ 
+ 
+ 
  1.4.0 -- 22 Nov 2015
 ----------------------
 
@@ -474,4 +464,3 @@
 * Split the async lib into core, cpp, qt and demo parts.
 
 * Earlier log entries for the async library can be found in ../qtel/ChangeLog.
-

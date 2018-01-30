@@ -42,6 +42,7 @@ variable need_ident 0;
 # A list of functions that should be called once every whole minute
 #
 variable timer_tick_subscribers [list];
+variable timer_tick_subscribers_seconds [list];
 
 #
 # Contains the ID of the last receiver that indicated squelch activity
@@ -52,10 +53,18 @@ variable sql_rx_id "?";
 # Executed when the SvxLink software is started
 #
 proc startup {} {
-  #playMsg "Core" "online"
-  #send_short_ident
+  global mycall;
+  playMsg "Core" "online"
+  spellWord $mycall;
 }
 
+#
+# Executed when a transmission has ended
+#
+proc send_courtesy_tone {} {
+  playTone 660 500 200;
+  playSilence 200
+}
 
 #
 # Executed when a specified module could not be found
@@ -75,7 +84,7 @@ proc manual_identification {} {
   global report_ctcss;
   global active_module;
   global loaded_modules;
-  variable CFG_TYPE;
+  global CFG_TYPE;
   variable prev_ident;
 
   set epoch [clock seconds];
@@ -115,7 +124,7 @@ proc manual_identification {} {
       }
     }
   }
-  playMsg "Default" "press_0_for_help"
+  playMsg "Core" "press_0_for_help"
   playSilence 250;
 }
 
@@ -127,14 +136,49 @@ proc manual_identification {} {
 #
 proc send_short_ident {{hour -1} {minute -1}} {
   global mycall;
+  global short_voice_id_enable;
+  global short_cw_id_enable;
+  global short_announce;
+  global short_announce_enable;
   variable CFG_TYPE;
-
-  spellWord $mycall;
-  if {$CFG_TYPE == "Repeater"} {
-    playMsg "Core" "repeater";
+  # only play voice id if not disabled (default to enabled)
+  
+  #puts $short_voice_id_enable
+  #puts $short_cw_id_enable
+  
+  if {$short_voice_id_enable != 0} {
+    puts "Playing short voice ID"
+    spellWord $mycall;
+    if {$CFG_TYPE == "Repeater"} {
+      playMsg "Core" "repeater";
+    }
+    playSilence 500;
   }
-  playSilence 500;
-}
+  # play announcements if either path is valid, otherwise print message to
+  # the log file
+  if {$short_announce_enable == 1} {
+    set announcement_path "/var/lib/svxlink/sounds/announcement/$short_announcement"
+    set fexist1 [file exist $path]
+    if {$fexist1} {
+      playFile $announcement_path
+               playSilence 500
+        } else {
+         playFile "CustomIdent" "Long_ID.wav"
+                playSilence 500
+            }
+    }
+    # only play CW id if not disabled (default to enabled)
+    if {$short_cw_id_enable !=0} {
+            puts "Playing long CW ID"
+            if {$CFG_TYPE == "Repeater"} {
+                set call "$mycall/R"
+                CW::play $call
+            } else {
+                CW::play $mycall
+            }
+            playSilence 500;
+        }
+  }
 
 
 #
@@ -146,19 +190,26 @@ proc send_long_ident {hour minute} {
   global mycall;
   global loaded_modules;
   global active_module;
+  global long_voice_id_enable;
+  global long_cw_id_enable;
+  global long_announce;
+  global long_announce_enable;
   variable CFG_TYPE;
 
+# only play the voice ID if not disabled (defualt to enabled)
+if {$long_voice_id_enable !=0} {
+  puts "Playing Long voice ID"
   spellWord $mycall;
   if {$CFG_TYPE == "Repeater"} {
     playMsg "Core" "repeater";
   }
   playSilence 500;
-
+  # announce the time
   playMsg "Core" "the_time_is";
   playSilence 100;
   playTime $hour $minute;
   playSilence 500;
-
+  
     # Call the "status_report" function in all modules if no module is active
   if {$active_module == ""} {
     foreach module [split $loaded_modules " "] {
@@ -169,25 +220,51 @@ proc send_long_ident {hour minute} {
       }
     }
   }
-
+  
   playSilence 500;
+}
+    
+  # play announcements if either path is valid, otherwise print message to
+  # the log file
+  if {$long_announce_enable == 1} {
+    set announcement_path "/var/lib/svxlink/sounds/announcement/$long_announcement"
+    set fexist1 [file exist $path]
+    if {$fexist1} {
+      playFile $announcement_path
+      playSilence 500
+    } else {
+      playFile "CustomIdent" "Long_ID.wav"
+      playSilence 500
+    }
+  }
+
+  # only play CW id if not disabled (default to enabled)
+  if {$long_cw_id_enable !=0} {
+    puts "Playing long CW ID"
+    if {$CFG_TYPE == "Repeater"} {
+      set call "$mycall/R"
+      CW::play $call
+    } else {
+      CW::play $mycall
+    }
+    playSilence 100
+  }  
 }
 
 
 #
-# Executed when the squelch have just closed and the RGR_SOUND_DELAY timer has
+# Executed when the squelch have just closed and the COURTESY_TONE_DELAY timer has
 # expired.
 #
-proc send_rgr_sound {} {
+proc send_courtesy_tone {} {
   variable sql_rx_id
 
-  if {$sql_rx_id != "?"} {
-    CW::setPitch 1000
-    CW::setAmplitude 600
-    CW::setCpm 150
-    CW::play $sql_rx_id
-  } else {
-    playTone 440 500 100
+  playTone 440 500 100
+  playSilence 200
+  
+  for {set i 0} {$i < $sql_rx_id} {incr i 1} {
+    playTone 880 500 50
+    playSilence 50
   }
   playSilence 100
 }
@@ -414,7 +491,20 @@ proc every_minute {} {
   }
 }
 
-
+#
+# Executed once every whole second. Don't put any code here directly
+# Create a new function and add it to the timer tick subscriber list
+# by using the function addTimerTickSubscriberSeconds.
+#
+proc every_second {} {
+  variable timer_tick_subscribers_seconds;
+  #puts [clock format [clock seconds] -format "%Y-%m-%d %H:%M:%S"];
+  foreach subscriber $timer_tick_subscribers_seconds {
+    $subscriber;
+  }
+}
+  
+  
 #
 # Use this function to add a function to the list of functions that
 # should be executed once every whole minute. This is not an event
@@ -423,6 +513,16 @@ proc every_minute {} {
 proc addTimerTickSubscriber {func} {
   variable timer_tick_subscribers;
   lappend timer_tick_subscribers $func;
+}
+  
+#
+# Use this function to add a function to the list of functions that
+# should be executed once every whole second. This is not an event
+# function but rather a management function.
+#
+proc addTimerTickSubscriberSeconds {func} {
+  variable timer_tick_subscribers_seconds;
+  lappend timer_tick_subscribers_seconds $func;
 }
 
 

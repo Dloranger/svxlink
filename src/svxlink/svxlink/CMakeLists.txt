@@ -46,7 +46,7 @@ add_version_target(SVXLINK VERSION_DEPENDS)
 
 # Build the executable
 add_executable(svxlink
-  MsgHandler.cpp Module.cpp Logic.cpp SimplexLogic.cpp RepeaterLogic.cpp
+  MsgHandler.cpp Module.cpp Logic.cpp SimplexLogic.cpp DuplexLogic.cpp
   EventHandler.cpp LinkManager.cpp CmdParser.cpp QsoRecorder.cpp svxlink.cpp
   DtmfDigitHandler.cpp ReflectorLogic.cpp
   ${VERSION_DEPENDS}
@@ -56,16 +56,24 @@ set_target_properties(svxlink PROPERTIES
   RUNTIME_OUTPUT_DIRECTORY ${RUNTIME_OUTPUT_DIRECTORY}
 )
 
-# Generate config file with correct paths
+# Generate config files with correct paths
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/svxlink.conf.in
   ${CMAKE_CURRENT_BINARY_DIR}/svxlink.conf
   @ONLY
   )
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/gpio.conf.in
-  ${CMAKE_CURRENT_BINARY_DIR}/gpio.conf
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/svxlink.conf.pi_repeater_2x.in
+  ${CMAKE_CURRENT_BINARY_DIR}/svxlink.conf.pi_repeater_2x
   @ONLY
   )
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/svxlink_gpio_up.in
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/svxlink_gpio.conf.in
+  ${CMAKE_CURRENT_BINARY_DIR}/svxlink_gpio.conf
+  @ONLY
+  )
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/svxlink_gpio.conf.pi-repeater-2x.in
+  ${CMAKE_CURRENT_BINARY_DIR}/svxlink_gpio.conf.pi-repeater-2x
+  @ONLY
+  )
+  configure_file(${CMAKE_CURRENT_SOURCE_DIR}/svxlink_gpio_up.in
   ${CMAKE_CURRENT_BINARY_DIR}/svxlink_gpio_up)
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/svxlink_gpio_down.in
   ${CMAKE_CURRENT_BINARY_DIR}/svxlink_gpio_down)
@@ -77,12 +85,20 @@ install_mkdir(${SVX_SHARE_INSTALL_DIR}/sounds)
 install_if_not_exists(${CMAKE_CURRENT_BINARY_DIR}/svxlink.conf
   ${SVX_SYSCONF_INSTALL_DIR}
   )
-install_if_not_exists(${CMAKE_CURRENT_BINARY_DIR}/gpio.conf
+install_if_not_exists(${CMAKE_CURRENT_BINARY_DIR}/svxlink_gpio.conf
   ${SVX_SYSCONF_INSTALL_DIR}
   )
+
 install(FILES events.tcl DESTINATION ${SVX_SHARE_INSTALL_DIR})
-install(FILES RepeaterLogic.tcl SimplexLogic.tcl Module.tcl Logic.tcl CW.tcl
-  SelCall.tcl locale.tcl
+
+# install Logics files
+install(FILES  Module.tcl Logic.tcl CW.tcl SelCall.tcl locale.tcl  
+  RepeaterLogic.tcl RepeaterLogic1.tcl RepeaterLogic2.tcl RepeaterLogic3.tcl
+  RepeaterLogic4.tcl RepeaterLogic5.tcl RepeaterLogic6.tcl
+  SimplexLogic.tcl SimplexLogic1.tcl SimplexLogic2.tcl SimplexLogic3.tcl
+  SimplexLogic4.tcl SimplexLogic5.tcl SimplexLogic6.tcl
+  DuplexLogic.tcl DuplexLogic1.tcl DuplexLogic2.tcl DuplexLogic3.tcl
+  DuplexLogic4.tcl DuplexLogic5.tcl DuplexLogic6.tcl
   DESTINATION ${SVX_SHARE_INSTALL_DIR}/events.d
   )
 install(PROGRAMS ${CMAKE_CURRENT_BINARY_DIR}/svxlink_gpio_up
