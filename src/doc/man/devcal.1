@@ -49,15 +49,15 @@ The deviation value at where to perform the calibration. The default value of
 .BI "-m|--maxdev=" "deviation in Hz"
 The maximum deviation used on the channel. This is the deviation value where
 transmitters start to limit the deviation so as not to cause interference in
-neighbouring channels. The default value is 5000Hz.
+neighboring channels. The default value is 5000Hz.
 .TP
 .BI "-H|--headroom=" "headroom in dB"
 The headroom is the margin to add above the maximum deviation level. Adding a
 headroom will allow SvxLink to handle levels above the maximum deviation level
-without causing immediate distorsion. The default is 6dB which mean that
+without causing immediate distortion. The default is 6dB which mean that
 SvxLink can handle twice the specified maximum deviation. If both maxdev and
 headroom are left at their default this will mean that SvxLink can handle 10kHz
-deviation without distorsion.
+deviation without distortion.
 
 Changing the headroom cause a lot of different effects so don't do that unless
 you are prepared to deal with the problems. For example, increasing the
@@ -75,7 +75,7 @@ Specify this command line option to perform transmitter calibration.
 .B -F|--flat
 Perform calibration on a transmitter or receiver that has a flat frequency
 response (no pre- or de-emphasis). If the transceiver has flat frequency
-responce but you have enabled pre-/de-emphasis in SvxLink, this option should
+response but you have enabled pre-/de-emphasis in SvxLink, this option should
 NOT be specified.
 .TP
 .B -M|--measure
@@ -134,7 +134,7 @@ until a value around 0ppm is shown.
 .
 In order to calibrate the transmitted deviation we need a way to measure it.
 There are multiple methods to do that. If you have a deviation meter you're in
-luck but most people does not own one of those. Fortuantely there are other
+luck but most people does not own one of those. Fortunately there are other
 ways.
 
 One way is to use a RTL2832U based DVB-T dongle with the devcal utility. First
@@ -189,7 +189,7 @@ value into the configuration file in the receiver section.
 .SH EXAMPLE: CALIBRATING USING A DVB-T USB DONGLE
 .
 This is an example of how the calibration procedure may be performed using a
-DVB-T USB dongle and an arbitrary transmitter, like a handie tranceiver.
+DVB-T USB dongle and an arbitrary transmitter, like a handie transceiver.
 
 The calibration transmitter, a handie transmitter for example, must be able to
 send some form of modulated tone for this procedure to work. The 1750Hz tone
@@ -203,7 +203,7 @@ Use the DVB-T dongle to measure the deviation of the 1750Hz tone.
   devcal -M -f1750 /path/to/svxlink.conf RxRtl
 
 Start transmitting with the calibration transmitter and wait for the values to
-stablilize. Take a note of the value for "tone dev". It may be something like
+stabilize. Take a note of the value for "tone dev". It may be something like
 3200Hz, which is used in the example below. Leave deval running since we will
 need it later on.
 

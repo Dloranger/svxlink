@@ -2,6 +2,7 @@
 
 [Unit]
 Description=SvxLink Reflector server software
+Documentation=man:remotetrx(1)
 After=network.target remote-fs.target syslog.target time.target
 
 [Service]
