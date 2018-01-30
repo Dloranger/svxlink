@@ -79,7 +79,7 @@ Description: Graphical client for the EchoLink® protocol
  .
  EchoLink® is a registered trademark of Synergenics, LLC.
 
-Package: libasynccpp1.4
+Package: libasynccpp1.5
 Architecture: any
 Multi-Arch: same
 Depends: ${shlibs:Depends}, ${misc:Depends}
@@ -117,7 +117,7 @@ Description: AsyncCpp library for SvxLink (development files)
  .
  EchoLink® is a registered trademark of Synergenics, LLC.
 
-Package: libasyncaudio1.4
+Package: libasyncaudio1.5
 Architecture: any
 Multi-Arch: same
 Depends: ${shlibs:Depends}, ${misc:Depends}
@@ -193,7 +193,7 @@ Description: EchoLib library for SvxLink (development files)
  .
  EchoLink® is a registered trademark of Synergenics, LLC.
 
-Package: libasyncqt1.4
+Package: libasyncqt1.5
 Architecture: any
 Multi-Arch: same
 Depends: ${shlibs:Depends}, ${misc:Depends}
@@ -232,7 +232,7 @@ Description: AsyncQt library for SvxLink (development files)
  .
  EchoLink® is a registered trademark of Synergenics, LLC.
 
-Package: libasynccore1.4
+Package: libasynccore1.5
 Architecture: any
 Multi-Arch: same
 Depends: ${shlibs:Depends}, ${misc:Depends}

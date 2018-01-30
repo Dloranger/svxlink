@@ -1,3 +1,9 @@
+svxlink (16.99-1) Testing; urgency=low
+
+  * New Branch read changelog of svxlink
+
+ -- Richard Neese <kb3vgw@gmail.com>  Tue, 30 Jan 2018 14:33:40 -0500 (15.99-21) Testing; urgency=low
+
 svxlink (15.99-21) Testing; urgency=low
 
   * added missing updated ti svxlink.service file

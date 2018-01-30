@@ -1,0 +1,4 @@
+libasynccore 1.5 libc6 (>= 2.14)
+libasynccore 1.5 libgcc1 (>= 1:4.1.1)
+libasynccore 1.5 libsigc++-2.0-0c2a (>= 2.2.0)
+libasynccore 1.5 libstdc++6 (>= 4.6)
