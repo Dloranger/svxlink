@@ -139,7 +139,7 @@ Package: libasyncaudio-dev
 Architecture: any
 Multi-Arch: same
 Section: libdevel
-Depends: ${misc:Depends}, libasyncaudio1.4 (= ${binary:Version})
+Depends: ${misc:Depends}, libasyncaudio1.5 (= ${binary:Version})
 Description: AsyncAudio library for SvxLink (development files)
  The SvxLink server provides access to a ham radio transceiver via
  the EchoLink® protocol.
@@ -216,7 +216,7 @@ Package: libasyncqt-dev
 Architecture: any
 Multi-Arch: same
 Section: libdevel
-Depends: ${misc:Depends}, libasyncqt1.4 (= ${binary:Version})
+Depends: ${misc:Depends}, libasyncqt1.5 (= ${binary:Version})
 Description: AsyncQt library for SvxLink (development files)
  The SvxLink server provides access to a ham radio transceiver via
  the EchoLink® protocol.
@@ -255,7 +255,7 @@ Package: libasynccore-dev
 Architecture: any
 Multi-Arch: same
 Section: libdevel
-Depends: ${misc:Depends}, libasynccore1.4 (= ${binary:Version})
+Depends: ${misc:Depends}, libasynccore1.5 (= ${binary:Version})
 Description: AsyncCore library for SvxLink (development files)
  The SvxLink server provides access to a ham radio transceiver via
  the EchoLink® protocol.
