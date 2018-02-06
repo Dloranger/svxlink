@@ -37,15 +37,15 @@ override_dh_auto_configure:
 
 .PHONY: override_dh_strip
 override_dh_strip:
-	dh_strip -psvxlink-server --dbgsym-migration='svxlink-server-dbg (<< 15.99-1~)'
-	dh_strip -psvxreflector --dbgsym-migration='svxreflector-dbg (<< 15.99-1~)'
-	dh_strip -premotetrx --dbgsym-migration='remotetrx-dbg (<< 15.99-1~)'
-	dh_strip -pqtel --dbgsym-migration='qtel-dbg (<< 15.99-1~)'
-	dh_strip -plibecholib1.3 --dbgsym-migration='libecholib-dbg (<< 15.99-1~)'
-	dh_strip -plibasynccore1.4 --dbgsym-migration='libasynccore-dbg (<< 15.99-1~)'
-	dh_strip -plibasynccpp1.4 --dbgsym-migration='libasynccpp-dbg (<< 15.99-1~)'
-	dh_strip -plibasyncaudio1.4 --dbgsym-migration='libasyncaudio-dbg (<< 15.99-1~)'
-	dh_strip -plibasyncqt1.4 --dbgsym-migration='libasyncqt-dbg (<< 15.99-1~)'
+	dh_strip -psvxlink-server --dbgsym-migration='svxlink-server-dbg (<< 16.99-1~)'
+	dh_strip -psvxreflector --dbgsym-migration='svxreflector-dbg (<< 16.99-1~)'
+	dh_strip -premotetrx --dbgsym-migration='remotetrx-dbg (<< 16.99-1~)'
+	dh_strip -pqtel --dbgsym-migration='qtel-dbg (<< 16.99-1~)'
+	dh_strip -plibecholib1.3 --dbgsym-migration='libecholib-dbg (<< 16.99-1~)'
+	dh_strip -plibasynccore1.5 --dbgsym-migration='libasynccore-dbg (<< 16.99-1~)'
+	dh_strip -plibasynccpp1.5 --dbgsym-migration='libasynccpp-dbg (<< 16.99-1~)'
+	dh_strip -plibasyncaudio1.5 --dbgsym-migration='libasyncaudio-dbg (<< 16.99-1~)'
+	dh_strip -plibasyncqt1.5 --dbgsym-migration='libasyncqt-dbg (<< 16.99-1~)'
 	
 .PHONY: override_dh_install_init
 override_dh_installinit:
