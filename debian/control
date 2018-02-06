@@ -101,7 +101,7 @@ Package: libasynccpp-dev
 Architecture: any
 Multi-Arch: same
 Section: libdevel
-Depends: ${misc:Depends}, libasynccpp1.4 (= ${binary:Version})
+Depends: ${misc:Depends}, libasynccpp1.5 (= ${binary:Version})
 Description: AsyncCpp library for SvxLink (development files)
  The SvxLink server provides access to a ham radio transceiver via
  the EchoLink® protocol.
