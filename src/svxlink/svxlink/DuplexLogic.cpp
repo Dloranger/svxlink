@@ -133,7 +133,7 @@ DuplexLogic::DuplexLogic(Async::Config& cfg, const std::string& name)
     activate_on_sql_close(false), no_repeat(false), open_on_sql_timer(-1),
     open_sql_flank(SQL_FLANK_CLOSE),
     short_sql_open_cnt(0), sql_flap_sup_min_time(1000),
-    sql_flap_sup_max_cnt(0), rgr_enable(true), open_reason("?"),
+    sql_flap_sup_max_cnt(0), courtesy_enable(true), open_reason("?"),
     ident_nag_min_time(2000), ident_nag_timer(-1)
 {
   up_timer.expired.connect(mem_fun(*this, &DuplexLogic::idleTimeout));
@@ -316,11 +316,11 @@ bool DuplexLogic::initialize(void)
 
 void DuplexLogic::processEvent(const string& event, const Module *module)
 {
-  rgr_enable = true;
+  courtesy_enable = true;
   
   if ((event == "every_minute") && isIdle())
   {
-    rgr_enable = false;
+    courtesy_enable = false;
   }
   
   if ((event == "repeater_idle") || (event == "send_send_courtesy_tone") /* ||
@@ -427,7 +427,7 @@ void DuplexLogic::allMsgsWritten(void)
 
 void DuplexLogic::audioStreamStateChange(bool is_active, bool is_idle)
 {
-  rgr_enable = true;
+  courtesy_enable = true;
 
   if (!repeater_is_up && is_active)
   {
@@ -498,7 +498,7 @@ void DuplexLogic::setIdle(bool idle)
     }
   }
 
-  enableRgrSoundTimer(idle && rgr_enable);
+  enableRgrSoundTimer(idle && courtesy_enable);
   
 } /* DuplexLogic::setIdle */
 
@@ -568,7 +568,7 @@ void DuplexLogic::squelchOpen(bool is_open)
   //cout << name() << ": The squelch is " << (is_open ? "OPEN" : "CLOSED")
   //     << endl;
   
-  rgr_enable = true;
+  courtesy_enable = true;
   
   if (is_open)
   {

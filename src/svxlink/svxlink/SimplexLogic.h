@@ -137,7 +137,7 @@ class SimplexLogic : public Logic
   private:
     bool  mute_rx_on_tx;
     bool  mute_tx_on_rx;
-    bool  rgr_sound_always;
+    bool  courtesy_tone_always;
     
 };  /* class SimplexLogic */
 
