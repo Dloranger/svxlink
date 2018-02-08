@@ -180,7 +180,7 @@ Logic::Logic(Config &cfg, const string& name)
 	
 {
   send_courtesy_tone_timer.expired.connect(sigc::hide(
-        mem_fun(*this, &Logic::sendRgrSound)));
+        mem_fun(*this, &Logic::sendcourtesytone)));
   logic_con_in = new AudioSplitter;
   logic_con_out = new AudioSelector;
 } /* Logic::Logic */
@@ -1114,7 +1114,7 @@ void Logic::clearPendingSamples(void)
 } /* Logic::clearPendingSamples */
 
 
-void Logic::enableRgrSoundTimer(bool enable)
+void Logic::enablecourtesytoneTimer(bool enable)
 {
   if (send_courtesy_tone_timer.timeout() < 0)
   {
@@ -1131,10 +1131,10 @@ void Logic::enableRgrSoundTimer(bool enable)
     }
     else
     {
-      sendRgrSound();
+      sendcourtesytone();
     }
   }
-} /* Logic::enableRgrSoundTimer */
+} /* Logic::enablecourtesytoneTimer */
 
 
 #if 0
@@ -1558,10 +1558,10 @@ void Logic::putCmdOnQueue(void)
 } /* Logic::putCmdOnQueue */
 
 
-void Logic::sendRgrSound(void)
+void Logic::sendcourtesytone(void)
 {
   processEvent("send_courtesy_tone");
-  enableRgrSoundTimer(false);
+  enablecourtesytoneTimer(false);
 } /* Logic::sendRogerSound */
 
 

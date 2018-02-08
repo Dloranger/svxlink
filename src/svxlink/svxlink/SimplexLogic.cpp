@@ -175,7 +175,7 @@ void SimplexLogic::squelchOpen(bool is_open)
   {
     if (courtesy_tone_always || (activeModule() != 0))
     {
-      enableRgrSoundTimer(true);
+      enablecourtesytoneTimer(true);
     }
     
     if (mute_tx_on_rx)
@@ -185,7 +185,7 @@ void SimplexLogic::squelchOpen(bool is_open)
   }
   else
   {
-    enableRgrSoundTimer(false);
+    enablecourtesytoneTimer(false);
     if (mute_tx_on_rx)
     {
       setTxCtrlMode(Tx::TX_OFF);

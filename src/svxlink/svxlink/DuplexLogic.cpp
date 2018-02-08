@@ -498,7 +498,7 @@ void DuplexLogic::setIdle(bool idle)
     }
   }
 
-  enableRgrSoundTimer(idle && courtesy_enable);
+  enablecourtesytoneTimer(idle && courtesy_enable);
   
 } /* DuplexLogic::setIdle */
 
