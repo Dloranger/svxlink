@@ -46,7 +46,7 @@ add_version_target(SVXLINK VERSION_DEPENDS)
 
 # Build the executable
 add_executable(svxlink
-  MsgHandler.cpp Module.cpp Logic.cpp SimplexLogic.cpp DuplexLogic.cpp
+  MsgHandler.cpp Module.cpp Logic.cpp DuplexLogic.cpp SimplexLogic.cpp 
   EventHandler.cpp LinkManager.cpp CmdParser.cpp QsoRecorder.cpp svxlink.cpp
   DtmfDigitHandler.cpp ReflectorLogic.cpp
   ${VERSION_DEPENDS}
@@ -61,16 +61,16 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/svxlink.conf.in
   ${CMAKE_CURRENT_BINARY_DIR}/svxlink.conf
   @ONLY
   )
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/svxlink.conf.pi_repeater_2x.in
-  ${CMAKE_CURRENT_BINARY_DIR}/svxlink.conf.pi_repeater_2x
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/svxlink.conf.pi_duplex_2x.in
+  ${CMAKE_CURRENT_BINARY_DIR}/svxlink.conf.pi_duplex_2x
   @ONLY
   )
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/svxlink_gpio.conf.in
   ${CMAKE_CURRENT_BINARY_DIR}/svxlink_gpio.conf
   @ONLY
   )
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/svxlink_gpio.conf.pi-repeater-2x.in
-  ${CMAKE_CURRENT_BINARY_DIR}/svxlink_gpio.conf.pi-repeater-2x
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/svxlink_gpio.conf.pi-duplex-2x.in
+  ${CMAKE_CURRENT_BINARY_DIR}/svxlink_gpio.conf.pi-duplex-2x
   @ONLY
   )
   configure_file(${CMAKE_CURRENT_SOURCE_DIR}/svxlink_gpio_up.in
@@ -93,8 +93,6 @@ install(FILES events.tcl DESTINATION ${SVX_SHARE_INSTALL_DIR})
 
 # install Logics files
 install(FILES  Module.tcl Logic.tcl CW.tcl SelCall.tcl locale.tcl  
-  RepeaterLogic.tcl RepeaterLogic1.tcl RepeaterLogic2.tcl RepeaterLogic3.tcl
-  RepeaterLogic4.tcl RepeaterLogic5.tcl RepeaterLogic6.tcl
   SimplexLogic.tcl SimplexLogic1.tcl SimplexLogic2.tcl SimplexLogic3.tcl
   SimplexLogic4.tcl SimplexLogic5.tcl SimplexLogic6.tcl
   DuplexLogic.tcl DuplexLogic1.tcl DuplexLogic2.tcl DuplexLogic3.tcl
