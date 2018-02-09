@@ -2,7 +2,7 @@
 ----------------------
 
 * Now possible to set the roger sound to be always on in the SimplexLogic, even
-  when no module is active. Use the RGR_SOUND_ALWAYS configuration variable to
+  when no module is active. Use the COURTESY_TONE_ALWAYS configuration variable to
   enable the feature.
 
 * New feature added called "AFSK-com". This feature make it possible to
@@ -76,7 +76,7 @@
 
 * The default group for SvxLink changed from 'daemon' to 'svxlink'.
 
-* ModuleEchoLink: New configuration variable REMOTE_RGR_SOUND that is used to
+* ModuleEchoLink: New configuration variable REMOTE_COURTESY_TONE that is used to
   enable the sending of a roger sound to remote Echolink stations when the
   squelch is closed on the local node. Default is to not send a roger sound.
 
@@ -94,7 +94,7 @@
 ----------------------
 * New settings PHONETIC_CALLSIGN SHORT_ID_VOICE_ENABLE SHORT_ID_CW_ENABLE SHORT_IDENT_INTERVAL LONG_ID_VOICE_ENABLE LONG_ID_CW_ENABLE LONG_IDENT_INTERVAL CW_AMP CW_WPM CW_PITCH
 
-* Changed RGR_SOUND to COURTESY_TONE Proper naming convention
+* Changed COURTESY_TONE to COURTESY_TONE Proper naming convention
 
 * Updated systemd for new settings
 

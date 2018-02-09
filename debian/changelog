@@ -41,7 +41,7 @@ svxlink (15.99-17) Testing; urgency=low
   * New settings CW_AMP in svxlink.conf
   * New settings CW_WPM in svxlink.conf
   * New settings CW_PITCH in svxlink.conf
-  * Changed RGR_SOUND to COURTESY_TONE 
+  * Changed COURTESY_TONE to COURTESY_TONE 
   * Updated systemd 
   * Changed RepeaterLogic to Duplex logic Naming Convention
   * No Sonames On-Modules

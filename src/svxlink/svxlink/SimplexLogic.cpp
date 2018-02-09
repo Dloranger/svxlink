@@ -118,7 +118,7 @@ using namespace Async;
 
 SimplexLogic::SimplexLogic(Async::Config& cfg, const string& name)
   : Logic(cfg, name), mute_rx_on_tx(true), mute_tx_on_rx(true),
-    rgr_sound_always(false)
+    courtesy_tone_always(false)
 {
 } /* SimplexLogic::SimplexLogic */
 
@@ -137,7 +137,7 @@ bool SimplexLogic::initialize(void)
   
   cfg().getValue(name(), "MUTE_RX_ON_TX", mute_rx_on_tx);
   cfg().getValue(name(), "MUTE_TX_ON_RX", mute_tx_on_rx);
-  cfg().getValue(name(), "RGR_SOUND_ALWAYS", rgr_sound_always);
+  cfg().getValue(name(), "COURTESY_TONE_ALWAYS", courtesy_tone_always);
   
   rxValveSetOpen(true);
   setTxCtrlMode(Tx::TX_AUTO);
@@ -173,9 +173,9 @@ void SimplexLogic::squelchOpen(bool is_open)
   
   if (!is_open)
   {
-    if (rgr_sound_always || (activeModule() != 0))
+    if (courtesy_tone_always || (activeModule() != 0))
     {
-      enableRgrSoundTimer(true);
+      enablecourtesytoneTimer(true);
     }
     
     if (mute_tx_on_rx)
@@ -185,7 +185,7 @@ void SimplexLogic::squelchOpen(bool is_open)
   }
   else
   {
-    enableRgrSoundTimer(false);
+    enablecourtesytoneTimer(false);
     if (mute_tx_on_rx)
     {
       setTxCtrlMode(Tx::TX_OFF);

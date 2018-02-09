@@ -217,7 +217,7 @@ class Logic : public LogicBase
     virtual void dtmfCtrlPtyCmdReceived(const void *buf, size_t count);
 
     void clearPendingSamples(void);
-    void enableRgrSoundTimer(bool enable);
+    void enablecourtesytoneTimer(bool enable);
     void rxValveSetOpen(bool do_open);
     void rptValveSetOpen(bool do_open);
     void checkIdle(void);
@@ -303,7 +303,7 @@ class Logic : public LogicBase
     void processCommand(const std::string &cmd, bool force_core_cmd=false);
     void processMacroCmd(const std::string &macro_cmd);
     void putCmdOnQueue(void);
-    void sendRgrSound(void);
+    void sendcourtesytone(void);
     void timeoutNextMinute(void);
 	void timeoutNextSecond(void);
     void everyMinute(Async::AtTimer *t);
