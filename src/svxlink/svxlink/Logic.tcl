@@ -39,10 +39,17 @@ variable ident_only_after_tx 0;
 variable need_ident 0;
 
 #
-# A list of functions that should be called once every whole minute
+# List of functions that should be called periodically. Use the
+# addMinuteTickSubscriber and addSecondTickSubscriber functions to
+# add subscribers.
 #
+<<<<<<< HEAD
 variable timer_tick_subscribers [list];
 variable timer_tick_subscribers_seconds [list];
+=======
+variable minute_tick_subscribers [list];
+variable second_tick_subscribers [list];
+>>>>>>> refs/remotes/sm0svx/master
 
 #
 # Contains the ID of the last receiver that indicated squelch activity
@@ -481,12 +488,12 @@ proc dtmf_cmd_received {cmd} {
 #
 # Executed once every whole minute. Don't put any code here directly
 # Create a new function and add it to the timer tick subscriber list
-# by using the function addTimerTickSubscriber.
+# by using the function addMinuteTickSubscriber.
 #
 proc every_minute {} {
-  variable timer_tick_subscribers;
+  variable minute_tick_subscribers;
   #puts [clock format [clock seconds] -format "%Y-%m-%d %H:%M:%S"];
-  foreach subscriber $timer_tick_subscribers {
+  foreach subscriber $minute_tick_subscribers {
     $subscriber;
   }
 }
@@ -506,13 +513,48 @@ proc every_second {} {
   
   
 #
+# Executed once every whole minute. Don't put any code here directly
+# Create a new function and add it to the timer tick subscriber list
+# by using the function addSecondTickSubscriber.
+#
+proc every_second {} {
+  variable second_tick_subscribers;
+  #puts [clock format [clock seconds] -format "%Y-%m-%d %H:%M:%S"];
+  foreach subscriber $second_tick_subscribers {
+    $subscriber;
+  }
+}
+
+
+#
+# Deprecated: Use the addMinuteTickSubscriber function instead
+#
+proc addTimerTickSubscriber {func} {
+  puts "*** WARNING: Calling deprecated TCL event handler addTimerTickSubcriber."
+  puts "             Use addMinuteTickSubscriber instead"
+  addMinuteTickSubscriber $func;
+}
+
+
+#
 # Use this function to add a function to the list of functions that
 # should be executed once every whole minute. This is not an event
 # function but rather a management function.
 #
-proc addTimerTickSubscriber {func} {
-  variable timer_tick_subscribers;
-  lappend timer_tick_subscribers $func;
+proc addMinuteTickSubscriber {func} {
+  variable minute_tick_subscribers;
+  lappend minute_tick_subscribers $func;
+}
+
+
+#
+# Use this function to add a function to the list of functions that
+# should be executed once every second. This is not an event
+# function but rather a management function.
+#
+proc addSecondTickSubscriber {func} {
+  variable second_tick_subscribers;
+  lappend second_tick_subscribers $func;
 }
   
 #
