@@ -10,7 +10,7 @@ specific logic core classes (e.g. SimplexLogic and DuplexLogic).
 
 \verbatim
 SvxLink - A Multi Purpose Voice Services System for Ham Radio Use
-Copyright (C) 2004-2017  Tobias Blomberg / SM0SVX
+Copyright (C) 2004-2018  Tobias Blomberg / SM0SVX
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -265,9 +265,15 @@ class Logic : public LogicBase
     Async::AudioSelector      	    *logic_con_out;
     Async::AudioSplitter	    	*logic_con_in;
     CmdParser 	      	      	    cmd_parser;
+<<<<<<< HEAD
     Async::AtTimer      	    	every_minute_timer;
 	Async::AtTimer      	    	every_second_timer;
     Async::AudioRecorder  	    	*recorder;
+=======
+    Async::AtTimer      	    every_minute_timer;
+    Async::AtTimer      	    every_second_timer;
+    Async::AudioRecorder  	    *recorder;
+>>>>>>> refs/remotes/sm0svx/master
     Async::AudioMixer	      	    *tx_audio_mixer;
     Async::AudioAmp   	      	    *fx_gain_ctrl;
     Async::AudioSelector      	    *tx_audio_selector;
