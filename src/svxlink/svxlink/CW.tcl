@@ -77,55 +77,97 @@ array set letters {
 
 # Private function
 proc calculateTimings {} {
-  global cw_wpm
-  global cw_amp
-  global cw_pitch
-  variable amplitude $cw_amp
-  variable fq $cw_pitch
-  
-  variable short_len [expr 60000 / (50 * $cw_wpm)]
-  variable long_len [expr $short_len * 3]
-  variable char_spacing $short_len
-  variable letter_spacing [expr $short_len * 3]
-  variable word_spacing [expr $short_len * 7]
+  variable short_len;
+  variable long_len [expr $short_len * 3];
+  variable char_spacing $short_len;
+  variable letter_spacing [expr $short_len * 3];
+  variable word_spacing [expr $short_len * 7];
 }
 
 
 #
 # Set the CW speed in words per minute
 #
-#proc setWpm {wpm} {
-#  variable short_len [expr 60000 / (50 * $wpm)];
-#  calculateTimings;
-#}
+proc setWpm {wpm} {
+  variable short_len [expr 60000 / (50 * $wpm)];
+  calculateTimings;
+}
 
 
 #
 # Set the CW speed in characters per minute
 #
-#proc setCpm {cpm} {
-#  variable short_len [expr 60000 / (10 * $cpm)];
-#  calculateTimings;
-#}
+proc setCpm {cpm} {
+  variable short_len [expr 60000 / (10 * $cpm)];
+  calculateTimings;
+}
+
 
 #
 # Set the pitch (frequency), in Hz, of the CW audio.
 #
-#proc setPitch {new_fq} {
-#  variable fq $new_fq;
-#}
+proc setPitch {new_fq} {
+  variable fq $new_fq;
+}
+
 
 #
-# Set the amplitude in per mille (0-1000) of full amplitude.
+# Set the amplitude in dB of full amplitude.
 #
-#proc setAmplitude {new_amplitude} {
-#  variable amplitude $new_amplitude;
-#}
+proc setAmplitude {new_amplitude} {
+  if {$new_amplitude > 0} {
+    set db_str [format "%.2f" [expr 20.0 * log10($new_amplitude / 1000.0)]]
+    puts "*** WARNING: Deprecated CW amplitude specification: $new_amplitude."
+    puts "             Use the equivalent $db_str (dB) instead."
+    variable amplitude $new_amplitude
+  } else {
+    variable amplitude [expr round(1000.0 * pow(10.0, $new_amplitude / 20.0))]
+  }
+}
+
+
+#
+# Load the values from the config file
+#
+proc loadDefaults {} {
+  variable ::Logic::CFG_CW_AMP
+  variable ::Logic::CFG_CW_CPM
+  variable ::Logic::CFG_CW_WPM
+  variable ::Logic::CFG_CW_PITCH
+
+  if [info exists CFG_CW_AMP] {
+    setAmplitude $CFG_CW_AMP
+  } else {
+    setAmplitude -6
+  }
+
+  if [info exists CFG_CW_CPM] {
+    setCpm $CFG_CW_CPM
+  } elseif [info exists CFG_CW_WPM] {
+    setWpm $CFG_CW_WPM
+  } else {
+    setCpm 100
+  }
+
+  if [info exists CFG_CW_PITCH] {
+    setPitch $CFG_CW_PITCH
+  } else {
+    setPitch 800
+  }
+
+  calculateTimings
+}
+
 
 #
 # Play the given CW text
 #
-proc play {txt} {
+#   txt   - The text to send
+#   cpm   - The CW speed in characters per minute
+#   pitch - The CW pitch in Hz
+#   amp   - The CW amplitude in dBFS
+#
+proc play {txt {cpm 0} {pitch 0} {amp 0}} {
   variable short_len;
   variable long_len;
   variable char_spacing;
@@ -134,7 +176,21 @@ proc play {txt} {
   variable fq;
   variable amplitude;
   variable letters;
-  
+
+  set load_defaults 0
+  if {$cpm > 0} {
+    setCpm $cpm
+    set load_defaults 1
+  }
+  if {$pitch > 0} {
+    setPitch $pitch
+    set load_defaults 1
+  }
+  if {$amp > 0} {
+    setAmplitude $amp
+    set load_defaults 1
+  }
+
   set txt [string toupper $txt];
   set first_letter 1;
   foreach letter [split $txt ""] {
@@ -157,13 +213,14 @@ proc play {txt} {
       }
     }
   }
+
+  if {$load_defaults} {
+    loadDefaults
+  }
 }
 
-# Set defaults
-#setPitch 800;
-#setAmplitude 500;
-#setCpm 100;
 
-#load values from config
-calculateTimings
+# Set defaults
+loadDefaults
+
 }
