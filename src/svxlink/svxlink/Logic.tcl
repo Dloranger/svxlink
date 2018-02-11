@@ -43,13 +43,8 @@ variable need_ident 0;
 # addMinuteTickSubscriber and addSecondTickSubscriber functions to
 # add subscribers.
 #
-<<<<<<< HEAD
-variable timer_tick_subscribers [list];
-variable timer_tick_subscribers_seconds [list];
-=======
 variable minute_tick_subscribers [list];
 variable second_tick_subscribers [list];
->>>>>>> refs/remotes/sm0svx/master
 
 #
 # Contains the ID of the last receiver that indicated squelch activity
@@ -211,12 +206,12 @@ if {$long_voice_id_enable !=0} {
     playMsg "Core" "repeater";
   }
   playSilence 500;
-  # announce the time
+
   playMsg "Core" "the_time_is";
   playSilence 100;
   playTime $hour $minute;
   playSilence 500;
-  
+
     # Call the "status_report" function in all modules if no module is active
   if {$active_module == ""} {
     foreach module [split $loaded_modules " "] {
@@ -227,7 +222,6 @@ if {$long_voice_id_enable !=0} {
       }
     }
   }
-  
   playSilence 500;
 }
     
@@ -267,6 +261,7 @@ proc send_courtesy_tone {} {
   variable sql_rx_id
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   playTone 440 500 100
   playSilence 200
   
@@ -274,12 +269,17 @@ proc send_courtesy_tone {} {
     playTone 880 500 50
     playSilence 50
 =======
+=======
+>>>>>>> origin/16.99-rgr-courtesy
   if {$sql_rx_id != "?"} {
     # 150 CPM, 1000 Hz, -4 dBFS
     CW::play $sql_rx_id 150 1000 -4
   } else {
     playTone 440 500 100
+<<<<<<< HEAD
 >>>>>>> refs/remotes/sm0svx/master
+=======
+>>>>>>> origin/16.99-rgr-courtesy
   }
   playSilence 100
 }
@@ -506,20 +506,7 @@ proc every_minute {} {
   }
 }
 
-#
-# Executed once every whole second. Don't put any code here directly
-# Create a new function and add it to the timer tick subscriber list
-# by using the function addTimerTickSubscriberSeconds.
-#
-proc every_second {} {
-  variable timer_tick_subscribers_seconds;
-  #puts [clock format [clock seconds] -format "%Y-%m-%d %H:%M:%S"];
-  foreach subscriber $timer_tick_subscribers_seconds {
-    $subscriber;
-  }
-}
-  
-  
+
 #
 # Executed once every whole minute. Don't put any code here directly
 # Create a new function and add it to the timer tick subscriber list
@@ -564,17 +551,6 @@ proc addSecondTickSubscriber {func} {
   variable second_tick_subscribers;
   lappend second_tick_subscribers $func;
 }
-  
-#
-# Use this function to add a function to the list of functions that
-# should be executed once every whole second. This is not an event
-# function but rather a management function.
-#
-proc addTimerTickSubscriberSeconds {func} {
-  variable timer_tick_subscribers_seconds;
-  lappend timer_tick_subscribers_seconds $func;
-}
-
 
 #
 # Should be executed once every whole minute to check if it is time to

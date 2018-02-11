@@ -77,45 +77,57 @@ array set letters {
 
 # Private function
 proc calculateTimings {} {
-  global cw_wpm
-  global cw_amp
-  global cw_pitch
-  variable amplitude $cw_amp
-  variable fq $cw_pitch
-  
-  variable short_len [expr 60000 / (50 * $cw_wpm)]
-  variable long_len [expr $short_len * 3]
-  variable char_spacing $short_len
-  variable letter_spacing [expr $short_len * 3]
-  variable word_spacing [expr $short_len * 7]
+  variable short_len;
+  variable long_len [expr $short_len * 3];
+  variable char_spacing $short_len;
+  variable letter_spacing [expr $short_len * 3];
+  variable word_spacing [expr $short_len * 7];
 }
 
 
 #
 # Set the CW speed in words per minute
 #
-#proc setWpm {wpm} {
-#  variable short_len [expr 60000 / (50 * $wpm)];
-#  calculateTimings;
-#}
+proc setWpm {wpm} {
+  variable short_len [expr 60000 / (50 * $wpm)];
+  calculateTimings;
+}
 
 
 #
 # Set the CW speed in characters per minute
 #
-#proc setCpm {cpm} {
-#  variable short_len [expr 60000 / (10 * $cpm)];
-#  calculateTimings;
-#}
+proc setCpm {cpm} {
+  variable short_len [expr 60000 / (10 * $cpm)];
+  calculateTimings;
+}
+
 
 #
 # Set the pitch (frequency), in Hz, of the CW audio.
 #
-#proc setPitch {new_fq} {
-#  variable fq $new_fq;
-#}
+proc setPitch {new_fq} {
+  variable fq $new_fq;
+}
+
 
 #
+# Set the amplitude in dB of full amplitude.
+#
+proc setAmplitude {new_amplitude} {
+  if {$new_amplitude > 0} {
+    set db_str [format "%.2f" [expr 20.0 * log10($new_amplitude / 1000.0)]]
+    puts "*** WARNING: Deprecated CW amplitude specification: $new_amplitude."
+    puts "             Use the equivalent $db_str (dB) instead."
+    variable amplitude $new_amplitude
+  } else {
+    variable amplitude [expr round(1000.0 * pow(10.0, $new_amplitude / 20.0))]
+  }
+}
+
+
+#
+<<<<<<< HEAD
 # Set the amplitude in dB of full amplitude.
 #
 <<<<<<< HEAD
@@ -138,6 +150,10 @@ proc setAmplitude {new_amplitude} {
 #
 # Load the values from the config file
 #
+=======
+# Load the values from the config file
+#
+>>>>>>> origin/16.99-rgr-courtesy
 proc loadDefaults {} {
   variable ::Logic::CFG_CW_AMP
   variable ::Logic::CFG_CW_CPM
@@ -167,7 +183,10 @@ proc loadDefaults {} {
   calculateTimings
 }
 
+<<<<<<< HEAD
 >>>>>>> refs/remotes/sm0svx/master
+=======
+>>>>>>> origin/16.99-rgr-courtesy
 
 #
 # Play the given CW text
@@ -229,7 +248,9 @@ proc play {txt {cpm 0} {pitch 0} {amp 0}} {
   }
 }
 
+
 # Set defaults
+<<<<<<< HEAD
 <<<<<<< HEAD
 #setPitch 800;
 #setAmplitude 500;
@@ -237,7 +258,8 @@ proc play {txt {cpm 0} {pitch 0} {amp 0}} {
 =======
 loadDefaults
 >>>>>>> refs/remotes/sm0svx/master
+=======
+loadDefaults
+>>>>>>> origin/16.99-rgr-courtesy
 
-#load values from config
-calculateTimings
 }
