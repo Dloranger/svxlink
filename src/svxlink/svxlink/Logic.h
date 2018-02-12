@@ -3,25 +3,20 @@
 @brief   The logic core of the SvxLink Server application
 @author  Tobias Blomberg / SM0SVX
 @date	 2004-03-23
-
 This is the logic core of the SvxLink Server application. This is where
 everything is tied together. It is also the base class for implementing
 specific logic core classes (e.g. SimplexLogic and DuplexLogic).
-
 \verbatim
 SvxLink - A Multi Purpose Voice Services System for Ham Radio Use
-Copyright (C) 2004-2017  Tobias Blomberg / SM0SVX
-
+Copyright (C) 2004-2018  Tobias Blomberg / SM0SVX
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation; either version 2 of the License, or
 (at your option) any later version.
-
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
-
 You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
@@ -245,9 +240,6 @@ class Logic : public LogicBase
     std::string       	      	    m_callsign;
 	std::string 					m_phonetic_spelling;
 	std::string 					m_time_format;
-	std::string 					m_cw_pitch;
-	std::string 					m_cw_wpm;
-	std::string 					m_cw_amp;
 	std::string						m_short_voice_id_enable;
 	std::string						m_short_cw_id_enable;
 	std::string						m_short_announce;
@@ -257,17 +249,17 @@ class Logic : public LogicBase
 	std::string						m_long_announce;
 	std::string						m_long_announce_enable;
     std::list<std::string>    	    cmd_queue;
-    Async::Timer      	       	    exec_cmd_on_sql_close_timer;
+    Async::Timer      	      	    exec_cmd_on_sql_close_timer;
     Async::Timer      	      	    send_courtesy_tone_timer;
-    float       	      	    	report_ctcss;
+    float       	      	    report_ctcss;
     std::map<int, std::string>	    macros;
     EventHandler      	      	    *event_handler;
     Async::AudioSelector      	    *logic_con_out;
-    Async::AudioSplitter	    	*logic_con_in;
+    Async::AudioSplitter	    *logic_con_in;
     CmdParser 	      	      	    cmd_parser;
-    Async::AtTimer      	    	every_minute_timer;
-	Async::AtTimer      	    	every_second_timer;
-    Async::AudioRecorder  	    	*recorder;
+    Async::AtTimer      	    every_minute_timer;
+    Async::AtTimer      	    every_second_timer;
+    Async::AudioRecorder  	    *recorder;
     Async::AudioMixer	      	    *tx_audio_mixer;
     Async::AudioAmp   	      	    *fx_gain_ctrl;
     Async::AudioSelector      	    *tx_audio_selector;
@@ -280,12 +272,12 @@ class Logic : public LogicBase
     Async::AudioStreamStateDetector *state_det;
     int                             fx_gain_normal;
     int                             fx_gain_low;
-    unsigned       	      	    	long_cmd_digits;
+    unsigned       	      	    long_cmd_digits;
     std::string       	      	    long_cmd_module;
     bool      	      	      	    report_events_as_idle;
     QsoRecorder                     *qso_recorder;
-    uint8_t			    			tx_ctcss;
-    uint8_t			    			tx_ctcss_mask;
+    uint8_t			    tx_ctcss;
+    uint8_t			    tx_ctcss_mask;
     std::string                     sel5_from;
     std::string                     sel5_to;
     AprsStatistics                  aprs_stats;

@@ -39,10 +39,12 @@ variable ident_only_after_tx 0;
 variable need_ident 0;
 
 #
-# A list of functions that should be called once every whole minute
+# List of functions that should be called periodically. Use the
+# addMinuteTickSubscriber and addSecondTickSubscriber functions to
+# add subscribers.
 #
-variable timer_tick_subscribers [list];
-variable timer_tick_subscribers_seconds [list];
+variable minute_tick_subscribers [list];
+variable second_tick_subscribers [list];
 
 #
 # Contains the ID of the last receiver that indicated squelch activity
@@ -204,12 +206,12 @@ if {$long_voice_id_enable !=0} {
     playMsg "Core" "repeater";
   }
   playSilence 500;
-  # announce the time
+
   playMsg "Core" "the_time_is";
   playSilence 100;
   playTime $hour $minute;
   playSilence 500;
-  
+
     # Call the "status_report" function in all modules if no module is active
   if {$active_module == ""} {
     foreach module [split $loaded_modules " "] {
@@ -220,7 +222,6 @@ if {$long_voice_id_enable !=0} {
       }
     }
   }
-  
   playSilence 500;
 }
     
@@ -259,12 +260,11 @@ if {$long_voice_id_enable !=0} {
 proc send_courtesy_tone {} {
   variable sql_rx_id
 
-  playTone 440 500 100
-  playSilence 200
-  
-  for {set i 0} {$i < $sql_rx_id} {incr i 1} {
-    playTone 880 500 50
-    playSilence 50
+  if {$sql_rx_id != "?"} {
+    # 150 CPM, 1000 Hz, -4 dBFS
+    CW::play $sql_rx_id 150 1000 -4
+  } else {
+    playTone 440 500 100
   }
   playSilence 100
 }
@@ -481,50 +481,61 @@ proc dtmf_cmd_received {cmd} {
 #
 # Executed once every whole minute. Don't put any code here directly
 # Create a new function and add it to the timer tick subscriber list
-# by using the function addTimerTickSubscriber.
+# by using the function addMinuteTickSubscriber.
 #
 proc every_minute {} {
-  variable timer_tick_subscribers;
+  variable minute_tick_subscribers;
   #puts [clock format [clock seconds] -format "%Y-%m-%d %H:%M:%S"];
-  foreach subscriber $timer_tick_subscribers {
+  foreach subscriber $minute_tick_subscribers {
     $subscriber;
   }
 }
 
+
 #
-# Executed once every whole second. Don't put any code here directly
+# Executed once every whole minute. Don't put any code here directly
 # Create a new function and add it to the timer tick subscriber list
-# by using the function addTimerTickSubscriberSeconds.
+# by using the function addSecondTickSubscriber.
 #
 proc every_second {} {
-  variable timer_tick_subscribers_seconds;
+  variable second_tick_subscribers;
   #puts [clock format [clock seconds] -format "%Y-%m-%d %H:%M:%S"];
-  foreach subscriber $timer_tick_subscribers_seconds {
+  foreach subscriber $second_tick_subscribers {
     $subscriber;
   }
 }
-  
-  
+
+
+#
+# Deprecated: Use the addMinuteTickSubscriber function instead
+#
+proc addTimerTickSubscriber {func} {
+  puts "*** WARNING: Calling deprecated TCL event handler addTimerTickSubcriber."
+  puts "             Use addMinuteTickSubscriber instead"
+  addMinuteTickSubscriber $func;
+}
+
+
 #
 # Use this function to add a function to the list of functions that
 # should be executed once every whole minute. This is not an event
 # function but rather a management function.
 #
-proc addTimerTickSubscriber {func} {
-  variable timer_tick_subscribers;
-  lappend timer_tick_subscribers $func;
-}
-  
-#
-# Use this function to add a function to the list of functions that
-# should be executed once every whole second. This is not an event
-# function but rather a management function.
-#
-proc addTimerTickSubscriberSeconds {func} {
-  variable timer_tick_subscribers_seconds;
-  lappend timer_tick_subscribers_seconds $func;
+proc addMinuteTickSubscriber {func} {
+  variable minute_tick_subscribers;
+  lappend minute_tick_subscribers $func;
 }
 
+
+#
+# Use this function to add a function to the list of functions that
+# should be executed once every second. This is not an event
+# function but rather a management function.
+#
+proc addSecondTickSubscriber {func} {
+  variable second_tick_subscribers;
+  lappend second_tick_subscribers $func;
+}
 
 #
 # Should be executed once every whole minute to check if it is time to

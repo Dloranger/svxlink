@@ -25,7 +25,7 @@ if {$logic_name != [namespace tail [namespace current]]} {
 proc startup {} {
   global logic_name;
   append func $logic_name "::checkPeriodicIdentify";
-  Logic::addTimerTickSubscriber $func;
+  Logic::addMinuteTickSubscriber $func;
   Logic::startup;
 }
 
@@ -173,6 +173,14 @@ proc every_minute {} {
 proc every_second {} {
   Logic::every_second;
 }
+
+#
+# Executed once every second
+#
+proc every_second {} {
+  Logic::every_second;
+}
+
 
 #
 # Executed each time the transmitter is turned on or off
