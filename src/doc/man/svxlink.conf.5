@@ -230,7 +230,7 @@ Set the default language to use for announcements. It should be set to an ISO
 code (e.g. sv_SE for Swedish). If not set, it defaults to en_US which is US English.
 .TP
 .B COURTESY_TONE_DELAY
-The number of milliseconds to wait after the squelch has been closed before a roger beep
+The number of milliseconds to wait after the squelch has been closed before a courtesy beep
 is played. The beep can be disabled by specifying a value of \-1 or commenting out this
 line. Often it is best to use the SQL_HANGTIME receiver configuration variable to specify
 a delay instead of specifying a delay here. This configuration variable should then be set
@@ -264,7 +264,7 @@ will transmit CTCSS tone when there is incoming traffic from a module.
 .IP \(bu 4
 .BR ANNOUNCEMENT
 will transmit CTCSS tone when an announcement is being played. Repeater idle
-sounds and roger beeps will not have tone sent with them though.
+sounds and courtesy beeps will not have tone sent with them though.
 .IP \(bu 4
 .BR ALWAYS
 will always transmit a CTCSS tone as soon as the transmitter is turned on.
@@ -373,7 +373,7 @@ full duplex device.  The normal setting is 1, to mute the TX when the squelch
 is open.
 .TP
 .B COURTESY_TONE_ALWAYS
-Set to 1 to always send roger sound after squelch close, even when no module is
+Set to 1 to always send courtesy beep after squelch close, even when no module is
 active.
 .
 .SS Repeater Logic Section
@@ -727,7 +727,7 @@ Always "Local" for a local receiver.
 .TP
 .B RX_ID
 A single char uniquely identifying this receiver. The RX identity can for
-example be used in the TCL event scripts to get different rogers sounds for
+example be used in the TCL event scripts to get different courtesy sounds for
 different receivers when using a receiver voter.
 .TP
 .B AUDIO_DEV
@@ -1583,7 +1583,7 @@ necessary.  The second reason to use this config variable is if different
 receivers have different hang times (explicitly or implicitly). If both a slow
 and fast receiver is receiving the same signal and the faster is currently
 chosen, when the PTT is released the slower receiver will be voted before
-closing.  This will cause a double squelch tail and double roger beep.
+closing.  This will cause a double squelch tail and double courtesy beep.
 Default is 500 milliseconds.
 .TP
 .B COMMAND_PTY
