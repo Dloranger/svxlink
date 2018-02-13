@@ -56,8 +56,8 @@ proc manual_identification {} {
 # Executed when the squelch just have closed and the COURTESY_TONE_DELAY timer has
 # expired.
 #
-proc send_send_courtesy_tone {} {
-  Logic::send_send_courtesy_tone;
+proc send_courtesy_tone {} {
+  Logic::send_courtesy_tone;
 }
 
 
