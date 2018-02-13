@@ -1546,7 +1546,7 @@ void Logic::sendcourtesytone(void)
 {
   processEvent("send_courtesy_tone");
   enablecourtesytoneTimer(false);
-} /* Logic::sendRogerSound */
+} /* Logic::sendCourtestyTone */
 
 
 void Logic::timeoutNextMinute(void)
