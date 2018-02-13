@@ -260,26 +260,11 @@ if {$long_voice_id_enable !=0} {
 proc send_courtesy_tone {} {
   variable sql_rx_id
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-  playTone 440 500 100
-  playSilence 200
-  
-  for {set i 0} {$i < $sql_rx_id} {incr i 1} {
-    playTone 880 500 50
-    playSilence 50
-=======
-=======
->>>>>>> origin/16.99-rgr-courtesy
   if {$sql_rx_id != "?"} {
     # 150 CPM, 1000 Hz, -4 dBFS
     CW::play $sql_rx_id 150 1000 -4
   } else {
     playTone 440 500 100
-<<<<<<< HEAD
->>>>>>> refs/remotes/sm0svx/master
-=======
->>>>>>> origin/16.99-rgr-courtesy
   }
   playSilence 100
 }
@@ -551,6 +536,7 @@ proc addSecondTickSubscriber {func} {
   variable second_tick_subscribers;
   lappend second_tick_subscribers $func;
 }
+
 
 #
 # Should be executed once every whole minute to check if it is time to

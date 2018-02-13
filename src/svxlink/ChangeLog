@@ -95,12 +95,12 @@
   full scale amplitude rather than thusands of full amplitude.
   Also it's now possible to give the CW::play function temporary values for CW
   speed, frequency and amplitude.
-<<<<<<< HEAD
-
-=======
->>>>>>> origin/16.99-rgr-courtesy
-
   
+* The MultiTx now "mute" the logging printouts from its transmitters so that
+  only one "Turning the transmitter ON/OFF" is displayed instead of one for
+  each transmitter.  
+
+
  1.6.1 -- 21 Jan 2018
 ----------------------
 
@@ -111,9 +111,11 @@
 
  1.6.0 -- 30 Dec 2017
 ----------------------
-* New settings PHONETIC_CALLSIGN SHORT_ID_VOICE_ENABLE SHORT_ID_CW_ENABLE SHORT_IDENT_INTERVAL LONG_ID_VOICE_ENABLE LONG_ID_CW_ENABLE LONG_IDENT_INTERVAL CW_AMP CW_WPM CW_PITCH
+* New settings PHONETIC_CALLSIGN SHORT_ID_VOICE_ENABLE SHORT_ID_CW_ENABLE 
+  SHORT_IDENT_INTERVAL LONG_ID_VOICE_ENABLE LONG_ID_CW_ENABLE 
+  LONG_IDENT_INTERVAL CW_AMP CW_WPM CW_PITCH 
 
-* Changed COURTESY_TONE to COURTESY_TONE Proper naming convention
+* Changed ROGER_SOUND to COURTESY_TONE, for proper naming convention
 
 * Updated systemd for new settings
 
