@@ -95,6 +95,10 @@
   full scale amplitude rather than thusands of full amplitude.
   Also it's now possible to give the CW::play function temporary values for CW
   speed, frequency and amplitude.
+<<<<<<< HEAD
+
+=======
+>>>>>>> origin/16.99-rgr-courtesy
 
   
  1.6.1 -- 21 Jan 2018

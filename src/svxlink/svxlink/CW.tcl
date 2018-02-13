@@ -127,8 +127,33 @@ proc setAmplitude {new_amplitude} {
 
 
 #
+<<<<<<< HEAD
+# Set the amplitude in dB of full amplitude.
+#
+<<<<<<< HEAD
+#proc setAmplitude {new_amplitude} {
+#  variable amplitude $new_amplitude;
+#}
+=======
+proc setAmplitude {new_amplitude} {
+  if {$new_amplitude > 0} {
+    set db_str [format "%.2f" [expr 20.0 * log10($new_amplitude / 1000.0)]]
+    puts "*** WARNING: Deprecated CW amplitude specification: $new_amplitude."
+    puts "             Use the equivalent $db_str (dB) instead."
+    variable amplitude $new_amplitude
+  } else {
+    variable amplitude [expr round(1000.0 * pow(10.0, $new_amplitude / 20.0))]
+  }
+}
+
+
+#
 # Load the values from the config file
 #
+=======
+# Load the values from the config file
+#
+>>>>>>> origin/16.99-rgr-courtesy
 proc loadDefaults {} {
   variable ::Logic::CFG_CW_AMP
   variable ::Logic::CFG_CW_CPM
@@ -158,6 +183,10 @@ proc loadDefaults {} {
   calculateTimings
 }
 
+<<<<<<< HEAD
+>>>>>>> refs/remotes/sm0svx/master
+=======
+>>>>>>> origin/16.99-rgr-courtesy
 
 #
 # Play the given CW text
@@ -221,6 +250,16 @@ proc play {txt {cpm 0} {pitch 0} {amp 0}} {
 
 
 # Set defaults
+<<<<<<< HEAD
+<<<<<<< HEAD
+#setPitch 800;
+#setAmplitude 500;
+#setCpm 100;
+=======
 loadDefaults
+>>>>>>> refs/remotes/sm0svx/master
+=======
+loadDefaults
+>>>>>>> origin/16.99-rgr-courtesy
 
 }
