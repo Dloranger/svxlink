@@ -884,7 +884,7 @@ void LocalTx::transmit(bool do_transmit)
   }
   else
   {
-    audio_io->close();
+    //audio_io->close();
     
     if (ctcss_enable)
     {
