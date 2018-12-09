@@ -164,7 +164,7 @@ class SineGenerator : public Async::AudioSource
       }
       else
       {
-      	audio_io.close();
+      	//audio_io.close();
       }
     }
 

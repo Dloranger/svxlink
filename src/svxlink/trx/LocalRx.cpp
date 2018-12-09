@@ -228,7 +228,7 @@ bool LocalRx::audioOpen(void)
 
 void LocalRx::audioClose(void)
 {
-  audio_io->close();
+  //audio_io->close();
 } /* LocalRx::audioClose */
 
 
